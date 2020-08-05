@@ -1,0 +1,9 @@
+{
+    "name": "nonfig/wordpress-plugin",
+    "type": "library",
+    "description": "Drop-in Plugin for Nonfig - Wordpress Support",
+    "minimum-stability": "dev",
+    "require": {
+        "squizlabs/php_codesniffer": "*"
+    }
+}

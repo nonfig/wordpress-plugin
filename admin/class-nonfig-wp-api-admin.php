@@ -142,9 +142,6 @@ class Nonfig_Wp_Api_Admin {
         );
         return $defaults;
     }
-    
-    
-    
 
     /**
      * Renders a simple page to display for the theme menu defined above.
@@ -184,7 +181,7 @@ class Nonfig_Wp_Api_Admin {
         // Next, we'll introduce the fields for toggling the visibility of content elements.
         add_settings_field(
             'show_header',                    // ID used to identify the field throughout the theme
-            __( 'App ID', 'nonfig_wp_api' ),          // The label to the left of the option interface element
+            __( 'Application ID', 'nonfig_wp_api' ),          // The label to the left of the option interface element
             array( $this, 'app_id_callback'),  // The name of the function responsible for rendering the option interface
             'nonfig_api_key_option',              // The page on which this option will be displayed
             'general_settings_section',              // The name of the section to which this field belongs
@@ -194,7 +191,7 @@ class Nonfig_Wp_Api_Admin {
         );
         add_settings_field(
             'show_content',
-            __( 'App Secret', 'nonfig_wp_api' ),
+            __( 'Application Secret', 'nonfig_wp_api' ),
             array( $this, 'app_secret_callback'),
             'nonfig_api_key_option',
             'general_settings_section',
