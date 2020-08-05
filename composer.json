@@ -4,6 +4,7 @@
     "description": "Drop-in Plugin for Nonfig - Wordpress Support",
     "minimum-stability": "dev",
     "require": {
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "*",
+        "nonfig/php-sdk": "dev-master"
     }
 }
