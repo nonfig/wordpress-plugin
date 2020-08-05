@@ -109,10 +109,6 @@ class Nonfig_Wp_Api_Admin {
 
 	}
 
-
-
-
-
     /**
      * This function introduces the theme options into the 'Appearance' menu and into a top-level
      * 'WPPB Demo' menu.
@@ -128,7 +124,7 @@ class Nonfig_Wp_Api_Admin {
             array( $this, 'render_settings_page_content')        // The name of the function to call when rendering this menu's page
         );
         */
-        add_options_page( 'Nonfig Page', 'Nonfig API', 'manage_options', 'nonfig_wp_api_options', array( $this, 'render_settings_page_content') );
+        add_options_page( 'Nonfig Page', 'Nonfig - Manage', 'manage_options', 'nonfig_wp_api_options', array( $this, 'render_settings_page_content') );
     }
     /**
      * Provides default values for the Display Options.
@@ -174,7 +170,7 @@ class Nonfig_Wp_Api_Admin {
         }
         add_settings_section(
             'general_settings_section',                  // ID used to identify this section and with which to register options
-            __( 'API Keys Options', 'nonfig_wp_api' ),            // Title to be displayed on the administration page
+            __( 'Setup Consumer Credential', 'nonfig_wp_api' ),            // Title to be displayed on the administration page
             array( $this, 'general_options_callback'),      // Callback used to render the description of the section
             'nonfig_api_key_option'                    // Page on which to add this section of options
         );

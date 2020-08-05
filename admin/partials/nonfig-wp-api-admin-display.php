@@ -39,9 +39,9 @@ if(!empty($nonfig_api_keys['app_id']) && !empty($nonfig_api_keys['app_secret']))
         $active_tab = 'api_key_option';
     } // end if/else ?>
     <h2 class="nav-tab-wrapper">
-        <a href="?page=nonfig_wp_api_options&tab=api_key_option" class="nav-tab <?php echo $active_tab == 'api_key_option' ? 'nav-tab-active' : ''; ?>"><?php _e( 'API Keys', 'nonfig_wp_api' ); ?></a>
+        <a href="?page=nonfig_wp_api_options&tab=api_key_option" class="nav-tab <?php echo $active_tab == 'api_key_option' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Settings', 'nonfig_wp_api' ); ?></a>
         <?php if($keysPresent){ ?>
-        <a href="?page=nonfig_wp_api_options&tab=content_options" class="nav-tab <?php echo $active_tab == 'content_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Content List', 'nonfig_wp_api' ); ?></a>
+        <a href="?page=nonfig_wp_api_options&tab=content_options" class="nav-tab <?php echo $active_tab == 'content_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Shortcode Generator', 'nonfig_wp_api' ); ?></a>
         <?php } ?>
         <?php /*
         <a href="?page=nonfig_wp_api_options&tab=input_examples" class="nav-tab <?php echo $active_tab == 'input_examples' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Input Examples', 'nonfig_wp_api' ); ?></a>

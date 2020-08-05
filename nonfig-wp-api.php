@@ -8,17 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://webstalk.net/
+ * @link              https://www.nonfig.com
  * @since             1.0.0
  * @package           Nonfig_Wp_Api
  *
  * @wordpress-plugin
- * Plugin Name:       Nonfig WP API
- * Plugin URI:        https://nonfig.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin Name:       Nonfig - Wordpress
+ * Plugin URI:        https://docs.nonfig.com/sdk/wordpress-plugin
+ * Description:       Nonfig has built-in support for Wordpress. Manage your Configurations and Content at a single hub and manage changes faster and better.
  * Version:           1.0.0
- * Author:            Azim Khan
- * Author URI:        http://webstalk.net/
+ * Author:            Nonfig
+ * Author URI:        https://www.nonfig.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       nonfig-wp-api
