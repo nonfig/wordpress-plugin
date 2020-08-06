@@ -74,9 +74,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-nonfig-wp-api.php';
  * @since    1.0.0
  */
 function run_nonfig_wp_api() {
-
 	$plugin = new Nonfig_Wp_Api();
 	$plugin->run();
-
 }
 run_nonfig_wp_api();

@@ -8,11 +8,24 @@ Nonfig will remove the need of providing access to your wordpress site. Every co
 
 # Developer
 
+
 To run wordpress locally for developing the plugin, please run the following command with your local docker installation:
+
+## Running Locally
 
 ```
 docker-compose -f stack.yml up
 ```
+
+## Lint and Style
+
+We are using PHP Code Sniffer (phpcs) to lint the code and `phpcbf` to automatically fix the suggestions as well. To writing, we are using `PSR2` standard that may change overtime.
+
+```
+./vendor/bin/phpcbf ./admin --standard=PSR2 --extensions=php
+```
+
+the example above only validates `/admin` folder. Essentially, we will validate everything.
 
 You would have wordpress running on port: `7777` and volume at `~/nonfig-wordpress` directory.
 

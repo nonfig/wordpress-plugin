@@ -1,10 +1,10 @@
 {
     "name": "nonfig/wordpress-plugin",
-    "type": "library",
+    "type": "wordpress-plugin",
     "description": "Drop-in Plugin for Nonfig - Wordpress Support",
     "minimum-stability": "dev",
     "require": {
         "squizlabs/php_codesniffer": "*",
-        "nonfig/php-sdk": "dev-master"
+        "nonfig/php-sdk": "*"
     }
 }
