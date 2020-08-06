@@ -68,8 +68,8 @@ if ($active_tab == 'content_options' && $keysPresent) {
                 <td>[nonfig id=enter-id-here"] show this when cannot resolve [/nonfig]</td>
             </tr>
             <tr>
-                <td><strong>Integrate using full exact path</strong></td>
-                <td>[nonfig path=enter-id-here"] show this when cannot resolve [/nonfig]</td>
+                <td><strong>Integrate using full exact name</strong></td>
+                <td>[nonfig name=enter-full-name-here"] show this when cannot resolve [/nonfig]</td>
             </tr>
             <tr>
                 <td><strong>Integrate using Labels</strong></td>
