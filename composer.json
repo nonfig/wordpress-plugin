@@ -5,6 +5,6 @@
     "minimum-stability": "dev",
     "require": {
         "squizlabs/php_codesniffer": "*",
-        "nonfig/php-sdk": "0.0.6"
+        "nonfig/php-sdk": "*"
     }
 }
