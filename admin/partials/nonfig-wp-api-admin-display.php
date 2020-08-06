@@ -60,6 +60,27 @@ if ($active_tab == 'content_options' && $keysPresent) {
 
 <div>
     <h1>Wizard goes here</h1>
+    <div>
+        You can create a shortcode for three use cases:
+        <table style="padding: 5px;">
+            <tr>
+                <td><strong>Integrate using unique ID</strong></td>
+                <td>[nonfig id=enter-id-here"] show this when cannot resolve [/nonfig]</td>
+            </tr>
+            <tr>
+                <td><strong>Integrate using full exact path</strong></td>
+                <td>[nonfig path=enter-id-here"] show this when cannot resolve [/nonfig]</td>
+            </tr>
+            <tr>
+                <td><strong>Integrate using Labels</strong></td>
+                <td>[nonfig labels=label1,label:2,..."] show this when cannot resolve [/nonfig]</td>
+            </tr>
+            <tr>
+                <td><strong>Integrate using Query Parameters</td>
+                <td>[nonfig source="query" fields="query1,campaign,..."] show this when cannot resolve [/nonfig]</td>
+            </tr>
+        </table>
+    </div>
 </div>
     <?php
 }
