@@ -193,11 +193,12 @@ class Nonfig_Wp_Api_Public {
             $jsonoutput=json_decode($configPath[0]->data);
             if(strpos($atts['keypath'], '.')>=0){
 
-                $stringoutput = _::get($jsonoutput, $atts['keypath'], "default");
+//                $stringoutput = _::get($jsonoutput, $atts['keypath'], "default");
             }
             else{
-                $stringoutput = $jsonoutput->{$atts['keypath']};
+
             }
+            $stringoutput = $jsonoutput->{$atts['keypath']};
 
             /*foreach($jsonoutput as $keyp=>$item){
                 if(strpos($atts['keypath'], '.')>=0){
