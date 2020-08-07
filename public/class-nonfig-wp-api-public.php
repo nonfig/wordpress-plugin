@@ -110,6 +110,7 @@ class Nonfig_Wp_Api_Public {
 
         require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
 
+
         // set up default parameters
         extract(shortcode_atts(array(
             'id' => '',
@@ -185,11 +186,19 @@ class Nonfig_Wp_Api_Public {
     }
 
     public function label_content_filter($nonfig,$label,$atts){
+//        require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
         $configPath = $nonfig->findConfigurationByLabels($label);
 
 	    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
             $jsonoutput=json_decode($configPath[0]->data);
-            $stringoutput = $jsonoutput->{$atts['keypath']};
+            if(strpos($atts['keypath'], '.')>=0){
+
+                $stringoutput = _::get($jsonoutput, $atts['keypath'], "default");
+            }
+            else{
+                $stringoutput = $jsonoutput->{$atts['keypath']};
+            }
+
             /*foreach($jsonoutput as $keyp=>$item){
                 if(strpos($atts['keypath'], '.')>=0){
                     $arrayobj = explode('.',$atts['keypath']);
