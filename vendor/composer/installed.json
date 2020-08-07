@@ -111,12 +111,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/nonfig/php-sdk.git",
-            "reference": "420f0e295df6fe3deea6756e4ae1b3ac33bc6cd9"
+            "reference": "9a1c781f647642d8b0777f5ca2bfddff6026f369"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/nonfig/php-sdk/zipball/420f0e295df6fe3deea6756e4ae1b3ac33bc6cd9",
-            "reference": "420f0e295df6fe3deea6756e4ae1b3ac33bc6cd9",
+            "url": "https://api.github.com/repos/nonfig/php-sdk/zipball/9a1c781f647642d8b0777f5ca2bfddff6026f369",
+            "reference": "9a1c781f647642d8b0777f5ca2bfddff6026f369",
             "shasum": ""
         },
         "require": {
@@ -127,7 +127,7 @@
             "codeception/codeception": "^4.1",
             "codeception/stub": "^3.7"
         },
-        "time": "2020-08-06T22:30:37+00:00",
+        "time": "2020-08-06T22:36:03+00:00",
         "type": "library",
         "installation-source": "source",
         "notification-url": "https://packagist.org/downloads/",

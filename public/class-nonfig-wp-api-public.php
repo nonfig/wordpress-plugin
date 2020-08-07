@@ -106,29 +106,75 @@ class Nonfig_Wp_Api_Public {
         add_shortcode('nonfig', array( $this, 'nonfig_shortcode_function'));
     }
 
-    public function nonfig_shortcode_function( $atts = array() ) {
+    public function nonfig_shortcode_function( $atts = array(), $content = null ) {
 
-        require_once plugin_dir_path(dirname(__FILE__)) . 'api/index.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
 
         // set up default parameters
         extract(shortcode_atts(array(
-            'path' => ''
+            'id' => '',
+            'name' => '',
+            'labels' => '',
+            'keypath' => '',
+            'param-type' => '',
+            'fields' => ''
         ), $atts));
         $nonfig_api_keys = get_option('nonfig_api_key_option');
-        if(!empty($nonfig_api_keys['app_id']) && !empty($nonfig_api_keys['app_secret']) && !empty($atts['path'])){
+        if(!empty($nonfig_api_keys['app_id']) && !empty($nonfig_api_keys['app_secret']) ){
 //            return $nonfig_api_keys['app_id']." - ".$nonfig_api_keys['app_secret']." - ".$atts['path'];
-
-            try {
-                $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
-                $configPath = $nonfig->findConfigurationByPath('/wordpress');
-                $stringoutput='';
-                foreach($configPath[0] as $ckey=>$item){
-                    if($item->fullyQualifiedName==$atts['path']){$stringoutput=$item->data;}
-                }
+            if(!empty($atts['id'])){
+                try {
+                    $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
+                    $configPath = $nonfig->findConfigurationById($atts['id']);
+                    $stringoutput=$configPath[0]->data;
                     return $stringoutput;
+                }
+                catch(Exception $e) {
+                    //return 'Message: ' .$e->getMessage();
+                    return $content;
+                }
             }
-            catch(Exception $e) {
-                return 'Message: ' .$e->getMessage();
+            else if(!empty($atts['name'])){
+                try {
+                    $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
+                    $configPath = $nonfig->findConfigurationByName($atts['name']);
+                    $stringoutput=$configPath[0]->data;
+                    return $stringoutput;
+                }
+                catch(Exception $e) {
+                    //return 'Message: ' .$e->getMessage();
+                    return $content;
+                }
+            }
+            else if(!empty($atts['labels'])){
+                try {
+                    $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
+                    $stringoutput=$this->label_content_filter($nonfig,$atts['labels'],$atts);
+                    return $stringoutput;
+                }
+                catch(Exception $e) {
+//                    return 'Message: ' .$e->getMessage();
+                    return $content;
+                }
+            }
+            else if(!empty($atts['param-type'])){
+                if($atts['param-type']=='query' && !empty($atts['field'])){
+                    try {
+                        $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
+                        $paramval = $_GET[$atts['field']];
+                        $stringoutput=$this->label_content_filter($nonfig,$paramval,$atts);
+                        return $stringoutput;
+                    }
+                    catch(Exception $e) {
+//                    return 'Message: ' .$e->getMessage();
+                        return $content;
+                    }
+                } else {
+                    return $content;
+                }
+
+            } else {
+                return $content;
             }
 
         } else {
@@ -136,6 +182,29 @@ class Nonfig_Wp_Api_Public {
         }
 
 
+    }
+
+    public function label_content_filter($nonfig,$label,$atts){
+        $configPath = $nonfig->findConfigurationByLabels($label);
+
+	    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
+            $jsonoutput=json_decode($configPath[0]->data);
+            $stringoutput = $jsonoutput->{$atts['keypath']};
+            /*foreach($jsonoutput as $keyp=>$item){
+                if(strpos($atts['keypath'], '.')>=0){
+                    $arrayobj = explode('.',$atts['keypath']);
+                    foreach($arrayobj as $initem){
+
+                    }
+                }
+                else if($keyp==$atts['keypath']){$stringoutput=$item;}
+
+            }*/
+        }
+	    else{
+            $stringoutput=$configPath[0]->data;
+        }
+        return $stringoutput;
     }
 
 
