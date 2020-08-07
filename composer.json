@@ -5,6 +5,7 @@
     "minimum-stability": "dev",
     "require": {
         "squizlabs/php_codesniffer": "*",
-        "nonfig/php-sdk": "*"
+        "nonfig/php-sdk": "*",
+        "lodash-php/lodash-php": "dev-master"
     }
 }
