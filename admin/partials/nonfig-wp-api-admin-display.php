@@ -60,6 +60,16 @@ if ($active_tab == 'content_options' && $keysPresent) {
 
 <div>
     <h1>Wizard goes here</h1>
+    <?php
+    require_once plugin_dir_path(dirname(__FILE__)) . '../vendor/nonfig/php-sdk/index.php';
+
+//    $nonfig = new Nonfig('1926ef61-1f23-4cf9-beac-338beb062017', 'TWBk1CGOeQQlQDR1gtlr');
+//    $config = $nonfig->findConfigurationByPath('/');
+
+    $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
+    $config = $nonfig->findConfigurationByLabels('texas')[0];
+    var_dump($config);
+    ?>
     <div>
         You can create a shortcode for three use cases:
         <table style="padding: 5px;">
@@ -67,9 +77,10 @@ if ($active_tab == 'content_options' && $keysPresent) {
                 <td><strong>Integrate using unique ID</strong></td>
                 <td>[nonfig id=enter-id-here"] show this when cannot resolve [/nonfig]</td>
             </tr>
+
             <tr>
                 <td><strong>Integrate using full exact name</strong></td>
-                <td>[nonfig name=enter-full-name-here"] show this when cannot resolve [/nonfig]</td>
+                <td>[nonfig name=enter-fulll-name-here"] show this when cannot resolve [/nonfig]</td>
             </tr>
             <tr>
                 <td><strong>Integrate using Labels</strong></td>
@@ -77,7 +88,7 @@ if ($active_tab == 'content_options' && $keysPresent) {
             </tr>
             <tr>
                 <td><strong>Integrate using Query Parameters</td>
-                <td>[nonfig source="query" fields="query1,campaign,..."] show this when cannot resolve [/nonfig]</td>
+                <td>[nonfig paramtype="query" fields="query1,campaign,..."] show this when cannot resolve [/nonfig]</td>
             </tr>
         </table>
     </div>
