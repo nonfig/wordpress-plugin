@@ -61,14 +61,14 @@ if ($active_tab == 'content_options' && $keysPresent) {
 <div>
     <h1>Wizard goes here</h1>
     <?php
-    require_once plugin_dir_path(dirname(__FILE__)) . '../vendor/nonfig/php-sdk/index.php';
+    /*require_once plugin_dir_path(dirname(__FILE__)) . '../vendor/nonfig/php-sdk/index.php';
 
 //    $nonfig = new Nonfig('1926ef61-1f23-4cf9-beac-338beb062017', 'TWBk1CGOeQQlQDR1gtlr');
 //    $config = $nonfig->findConfigurationByPath('/');
 
     $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
     $config = $nonfig->findConfigurationByLabels('texas')[0];
-    var_dump($config);
+    var_dump($config);*/
     ?>
     <div>
         You can create a shortcode for three use cases:
@@ -92,6 +92,123 @@ if ($active_tab == 'content_options' && $keysPresent) {
             </tr>
         </table>
     </div>
+    <style>
+        .generator{}
+        .generator input{width:50%;}
+        .generator table{min-width:50%;}
+        .generator table input{width:100%;}
+    </style>
+    <div class="generator">
+        <h3>Generate Shortcode</h3>
+        <h4>By ID</h4>
+        <div>
+            <table>
+                <tr>
+                    <td><input type="text" class="nonfig-id" placeholder="ID"/></td>
+                    <td><input type="text" class="nonfig-id-unresolve" value="show this when cannot resolve" /></td>
+                </tr>
+            </table>
+            <div>
+                <p class="nonfig-id-output"></p>
+            </div>
+        </div>
+        <h4>By Full Name</h4>
+        <div>
+            <table>
+                <tr>
+                    <td><input type="text" class="nonfig-name" placeholder="Full Name" /></td>
+                    <td><input type="text" class="nonfig-name-unresolve" value="show this when cannot resolve" /></td>
+                </tr>
+            </table>
+            <div>
+                <p class="nonfig-name-output"></p>
+            </div>
+        </div>
+
+        <h4>By Label</h4>
+        <div>
+            <table>
+                <tr>
+                    <td><input type="text" class="nonfig-label" placeholder="Label" /></td>
+                    <td><input type="text" class="nonfig-keypath" placeholder="KeyPath (optional)"/></td>
+                    <td><input type="text" class="nonfig-label-unresolve" value="show this when cannot resolve" /></td>
+                </tr>
+            </table>
+            <div>
+                <p class="nonfig-label-output"></p>
+            </div>
+        </div>
+
+        <h4>By Query</h4>
+        <div>
+            <table>
+                <tr>
+<!--                    <td><input type="text" class="nonfig-param-type" value="query" disabled/></td>-->
+                    <td><input type="text" class="nonfig-field" placeholder="Field"/></td>
+                    <td><input type="text" class="nonfig-keypath2" placeholder="KeyPath (optional)"/></td>
+                    <td><input type="text" class="nonfig-query-unresolve" value="show this when cannot resolve" /></td>
+                </tr>
+            </table>
+            <div>
+                <p class="nonfig-query-output"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        jQuery(function($){
+            $('body').on('blur','.nonfig-id, .nonfig-id-unresolve',function(){
+                var fildval = $('.nonfig-id').val(),
+                    unresl = $('.nonfig-id-unresolve').val();
+                if(fildval!=''){
+                    $('.nonfig-id-output').text('[nonfig id="'+fildval+'"] '+unresl+' [/nonfig]');
+                }else{
+                    $('.nonfig-id-output').text('[nonfig id="enter-id-here"] '+unresl+' [/nonfig]');
+                }
+            });
+
+
+            $('body').on('blur','.nonfig-name, .nonfig-name-unresolve',function(){
+                var fildval = $('.nonfig-name').val(),
+                    unresl = $('.nonfig-name-unresolve').val();
+                if(fildval!=''){
+                    $('.nonfig-name-output').text('[nonfig name="'+fildval+'"] '+unresl+' [/nonfig]');
+                }else{
+                    $('.nonfig-name-output').text('[nonfig name="enter-fulll-name-here"] '+unresl+' [/nonfig]');
+                }
+            });
+
+
+            $('body').on('blur','.nonfig-label, .nonfig-keypath, .nonfig-label-unresolve',function(){
+                var fildval = $('.nonfig-label').val(),
+                    keypth = $('.nonfig-keypath').val(),
+                    unresl = $('.nonfig-label-unresolve').val();
+                if(fildval!=''){
+                    $('.nonfig-label-output').text('[nonfig labels="'+fildval+'"] '+unresl+' [/nonfig]');
+                    if(keypth!=''){
+                        $('.nonfig-label-output').text('[nonfig labels="'+fildval+'" keypath="'+keypth+'"] '+unresl+' [/nonfig]');
+                    }
+                }else{
+                    $('.nonfig-label-output').text('[nonfig labels="enter-fulll-name-here"] '+unresl+' [/nonfig]');
+                }
+            });
+
+
+            $('body').on('blur','.nonfig-field, .nonfig-keypath2, .nonfig-query-unresolve',function(){
+                var fildval = $('.nonfig-field').val(),
+                    keypth = $('.nonfig-keypath2').val(),
+                    unresl = $('.nonfig-query-unresolve').val();
+                if(fildval!=''){
+                    $('.nonfig-query-output').text('[nonfig labels="'+fildval+'"] '+unresl+' [/nonfig]');
+                    if(keypth!=''){
+                        $('.nonfig-query-output').text('[nonfig labels="'+fildval+'" keypath="'+keypth+'"] '+unresl+' [/nonfig]');
+                    }
+                }else{
+                    $('.nonfig-query-output').text('[nonfig labels="enter-fulll-name-here"] '+unresl+' [/nonfig]');
+                }
+            });
+
+        });
+    </script>
 </div>
     <?php
 }
