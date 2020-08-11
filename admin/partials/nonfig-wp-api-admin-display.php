@@ -6,7 +6,8 @@ $active_tab = (isset($_GET['tab']))
     : 'api_key_option';
 $keysPresent = false;
 
-if (!empty($nonfig_api_keys['app_id']) &&
+if (
+    !empty($nonfig_api_keys['app_id']) &&
     !empty($nonfig_api_keys['app_secret'])
 ) {
     $keysPresent = true;
@@ -17,10 +18,7 @@ settings_errors();
 <div class="wrap">
     <h2><?php _e('Nonfig API Options', 'nonfig_wp_api'); ?></h2>
     <h2 class="nav-tab-wrapper">
-        <a
-            href="?page=nonfig_wp_api_options&tab=api_key_option"
-            class="nav-tab <?php echo $active_tab == 'api_key_option' ? 'nav-tab-active' : ''; ?>"
-        >
+        <a href="?page=nonfig_wp_api_options&tab=api_key_option" class="nav-tab <?php echo $active_tab == 'api_key_option' ? 'nav-tab-active' : ''; ?>">
             <?php _e('Settings', 'nonfig_wp_api'); ?>
         </a>
         <?php if ($keysPresent) { ?>
@@ -52,172 +50,241 @@ settings_errors();
 </div><!-- /.wrap -->
 
 <!-- Shortcode Generator section -->
-<?php
-if ($active_tab == 'content_options' && $keysPresent) {
-    // show a form or wizard over here
-
-    ?>
-
-<div>
-    <?php
-    /*require_once plugin_dir_path(dirname(__FILE__)) . '../vendor/nonfig/php-sdk/index.php';
-
-//    $nonfig = new Nonfig('1926ef61-1f23-4cf9-beac-338beb062017', 'TWBk1CGOeQQlQDR1gtlr');
-//    $config = $nonfig->findConfigurationByPath('/');
-
-    $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
-    $config = $nonfig->findConfigurationByLabels('texas')[0];
-    var_dump($config);*/
-    ?>
-    <style>
-        .generator{}
-        .generator .field{margin:0 0 20px;}
-        .generator .field label{display:block; margin:0px 0px 5px;}
-        .generator input,
-        .generator select{width:300px;}
-        .generator button{padding:10px; margin:10px 0; cursor:pointer;}
-    </style>
-    <div class="generator">
-        <h3>Generate Shortcode</h3>
-        <?php /* ?>
-        <h4>By ID</h4>
-        <div>
-            <table>
-                <tr>
-                    <td><input type="text" class="nonfig-id" placeholder="ID"/></td>
-                    <td><input type="text" class="nonfig-id-unresolve" value="show this when cannot resolve" /></td>
-                </tr>
-            </table>
-            <div>
-                <p class="nonfig-id-output"></p>
-            </div>
-        </div>
-        <h4>By Full Name</h4>
-        <div>
-            <table>
-                <tr>
-                    <td><input type="text" class="nonfig-name" placeholder="Full Name" /></td>
-                    <td><input type="text" class="nonfig-name-unresolve" value="show this when cannot resolve" /></td>
-                </tr>
-            </table>
-            <div>
-                <p class="nonfig-name-output"></p>
-            </div>
-        </div>
-
-        <h4>By Label</h4>
-        <div>
-            <table>
-                <tr>
-                    <td><input type="text" class="nonfig-label" placeholder="Label" /></td>
-                    <td><input type="text" class="nonfig-keypath" placeholder="KeyPath (optional)"/></td>
-                    <td><input type="text" class="nonfig-label-unresolve" value="show this when cannot resolve" /></td>
-                </tr>
-            </table>
-            <div>
-                <p class="nonfig-label-output"></p>
-            </div>
-        </div>
-        <h4>By Query</h4>
-        <?php */ ?>
-
-        <div>
-            <div class="field">
-                <label>Parameter Type</label>
-                <select class="nonfig-type">
-                    <option value="query">Query</option>
-                    <option value="url" disabled>URL</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Parameter Name</label>
-                <input type="text" class="nonfig-field" placeholder="Field"/>
-            </div>
-            <div class="field">
-                <label>Nonfig Key Path</label>
-                <input type="text" class="nonfig-keypath2" placeholder="KeyPath (optional)"/>
-            </div>
-            <div>
-                <button class="generateShortCode">Generate</button>
-                <p class="nonfig-query-output"></p>
-            </div>
-        </div>
-    </div>
-    <script>
-        jQuery(function($){
-            /*
-            $('body').on('blur','.nonfig-id, .nonfig-id-unresolve',function(){
-                var fildval = $('.nonfig-id').val(),
-                    unresl = $('.nonfig-id-unresolve').val();
-                if(fildval!=''){
-                    $('.nonfig-id-output').text('[nonfig id="'+fildval+'"] '+unresl+' [/nonfig]');
-                }else{
-                    $('.nonfig-id-output').text('[nonfig id="enter-id-here"] '+unresl+' [/nonfig]');
-                }
-            });
-
-
-            $('body').on('blur','.nonfig-name, .nonfig-name-unresolve',function(){
-                var fildval = $('.nonfig-name').val(),
-                    unresl = $('.nonfig-name-unresolve').val();
-                if(fildval!=''){
-                    $('.nonfig-name-output').text('[nonfig name="'+fildval+'"] '+unresl+' [/nonfig]');
-                }else{
-                    $('.nonfig-name-output').text('[nonfig name="enter-fulll-name-here"] '+unresl+' [/nonfig]');
-                }
-            });
-
-
-            $('body').on('blur','.nonfig-label, .nonfig-keypath, .nonfig-label-unresolve',function(){
-                var fildval = $('.nonfig-label').val(),
-                    keypth = $('.nonfig-keypath').val(),
-                    unresl = $('.nonfig-label-unresolve').val();
-                if(fildval!=''){
-                    $('.nonfig-label-output').text('[nonfig labels="'+fildval+'"] '+unresl+' [/nonfig]');
-                    if(keypth!=''){
-                        $('.nonfig-label-output').text('[nonfig labels="'+fildval+'" keypath="'+keypth+'"] '+unresl+' [/nonfig]');
-                    }
-                }else{
-                    $('.nonfig-label-output').text('[nonfig labels="enter-fulll-name-here"] '+unresl+' [/nonfig]');
-                }
-            });
-*/
-
-            $('body').on('click','.generateShortCode',function(){
-                var ftype = $('.nonfig-type').val(),
-                    fildval = $('.nonfig-field').val(),
-                    keypth = $('.nonfig-keypath2').val();
-                if(fildval!=''){
-                    $('.nonfig-query-output').text('[nonfig param-type="'+ftype+'" field="'+fildval+'"] show this when cannot resolve [/nonfig]');
-                    if(keypth!=''){
-                        $('.nonfig-query-output').text('[nonfig param-type="'+ftype+'" field="'+fildval+'" keypath="'+keypth+'"] show this when cannot resolve [/nonfig]');
-                    }
-                }else{
-                    // $('.nonfig-query-output').text('[nonfig param-type="enter-fulll-name-here"] show this when cannot resolve [/nonfig]');
-                }
-            });
-
-        });
-    </script>
-</div>
-    <?php
-} else {
-?>
-
+<?php if ($active_tab == 'content_options' && $keysPresent) { ?>
     <div>
-        <h2>Usage</h2>
-        <p>You can create a shortcode for three use cases:</p>
-        <table style="padding: 5px;">
-            <tr>
-                <td><strong>Integrate using unique ID</strong></td>
-                <td>[nonfig id="enter-id-here"] show this when cannot resolve [/nonfig]</td>
-            </tr>
+        <style>
+            .generator {}
 
-            <tr>
-                <td><strong>Integrate using full exact name</strong></td>
-                <td>[nonfig name="enter-fulll-name-here"] show this when cannot resolve [/nonfig]</td>
-            </tr>
-        </table>
+            .generator input {
+                width: 50%;
+            }
+
+            .generator table {
+                min-width: 50%;
+            }
+
+            .generator table input {
+                width: 100%;
+            }
+        </style>
+
+        <div>
+            <br />
+            <div class="row">
+                <div class="col s3 m3">
+                    <div class="card teal accent-4 z-depth-3">
+                        <div class="card-content white-text">
+                            <span class="card-title">Query Parameter</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="waves-effect waves-light btn-small red">Generate Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s3 m3">
+                    <div class="card teal accent-4 z-depth-3">
+                        <div class="card-content white-text">
+                            <span class="card-title">Using Full Name</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="waves-effect waves-light btn-small red">Generate Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s3 m3">
+                    <div class="card teal accent-4 z-depth-3">
+                        <div class="card-content white-text">
+                            <span class="card-title">Using Unique ID</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="waves-effect waves-light btn-small red">Generate Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s3 m3">
+                    <div class="card teal accent-4 z-depth-3">
+                        <div class="card-content white-text">
+                            <span class="card-title">Using Labels</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="waves-effect waves-light btn-small red modal-trigger" href="#modal-using-labels">Generate Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-using-labels" class="modal">
+            <div class="modal-content">
+                <h4>Generate for Segmented Labels </h4>
+                <div>
+                    <div class="input-field col">
+                        <i class="material-icons prefix">add_circle</i>
+                        <div class="chips chips-placeholder form-input-labels"></div>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">build</i>
+
+                        <input placeholder="Do you want to point a path inside the file i.g .path.to.value" type="text" class="form-input-keypath">
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">mode_edit</i>
+
+                        <textarea class="materialize-textarea form-input-default" placeholder="Show this if cannot resolve a configuration"></textarea>
+                        <label for="textarea2">Default fallback value</label>
+                    </div>
+                    <div class="waiting-for-input-loader center">
+                        <div class="preloader-wrapper big active">
+                            <div class="spinner-layer spinner-blue">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-red">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-yellow">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-green">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-output">
+                        <p style="background-color: #000;color: #fff;padding: 10px;border-radius: 5px;" class="nonfig-query-output"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Copy Code</a>
+            </div>
+        </div>
+
+        <script>
+            jQuery(function($) {
+                // register modal plugin
+                $('.modal').modal();
+
+                // register chips plugin
+                $('.chips-placeholder').chips({
+                    placeholder: 'Enter label name',
+                    secondaryPlaceholder: '+Label',
+                });
+
+                $('body').on('blur', '.nonfig-id, .nonfig-id-unresolve', function() {
+                    var fildval = $('.nonfig-id').val(),
+                        unresl = $('.nonfig-id-unresolve').val();
+                    if (fildval != '') {
+                        $('.nonfig-id-output').text('[nonfig id="' + fildval + '"] ' + unresl + ' [/nonfig]');
+                    } else {
+                        $('.nonfig-id-output').text('[nonfig id="enter-id-here"] ' + unresl + ' [/nonfig]');
+                    }
+                });
+
+
+                $('body').on('blur', '.nonfig-name, .nonfig-name-unresolve', function() {
+                    var fildval = $('.nonfig-name').val(),
+                        unresl = $('.nonfig-name-unresolve').val();
+                    if (fildval != '') {
+                        $('.nonfig-name-output').text('[nonfig name="' + fildval + '"] ' + unresl + ' [/nonfig]');
+                    } else {
+                        $('.nonfig-name-output').text('[nonfig name="enter-fulll-name-here"] ' + unresl + ' [/nonfig]');
+                    }
+                });
+
+
+                $('body').on('blur', '.nonfig-label, .nonfig-keypath, .nonfig-label-unresolve', function() {
+                    var fildval = $('.nonfig-label').val(),
+                        keypth = $('.nonfig-keypath').val(),
+                        unresl = $('.nonfig-label-unresolve').val();
+                    if (fildval != '') {
+                        $('.nonfig-label-output').text('[nonfig labels="' + fildval + '"] ' + unresl + ' [/nonfig]');
+                        if (keypth != '') {
+                            $('.nonfig-label-output').text('[nonfig labels="' + fildval + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
+                        }
+                    } else {
+                        $('.nonfig-label-output').text('[nonfig labels="enter-fulll-name-here"] ' + unresl + ' [/nonfig]');
+                    }
+                });
+
+                // handler: using labels
+                $('body')
+                    .on(
+                        'blur',
+                        '.form-input-labels, .form-input-keypath, .form-input-default',
+                        function callbackFn() {
+                            var chipInstance = M.Chips.getInstance($('.form-input-labels'));
+                            var labels = chipInstance.chipsData.map(chip => chip.tag);
+                            var keyPath = $('.form-input-keypath').val();
+                            var defaultValue = $('.form-input-default').val();
+
+                            if (labels.length > 0) {
+                                $('.waiting-for-input-loader').hide();
+                                var keyset = [
+                                    `labels="${labels.join(',')}"`
+                                ]
+
+                                if (keyPath) {
+                                    keyset.push(`keypath="${keyPath}"`)
+                                }
+
+                                setOutputCode(generateShortcode(keyset, defaultValue));
+                            }
+                        }
+                    )
+
+                function generateShortcode(keyset, defaultValue) {
+                    return `[nonfig ${Array.from(keyset).join(' ')}]${defaultValue}[/nonfig]`
+                }
+
+                function setOutputCode(result) {
+                    $('.code-output p').text(result);
+                }
+            });
+        </script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </div>
 <?php
 }

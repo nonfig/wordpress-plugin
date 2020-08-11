@@ -84,7 +84,7 @@ class Nonfig_Wp_Api_Admin
          * between the defined hooks and the functions defined in this
          * class.
          */
-
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/materialize.min.css', array(), $this->version, 'all' );
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nonfig-wp-api-admin.css', array(), $this->version, 'all');
     }
 
@@ -107,7 +107,7 @@ class Nonfig_Wp_Api_Admin
          * between the defined hooks and the functions defined in this
          * class.
          */
-
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/materialize.min.js', array('jquery'), $this->version, false);
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nonfig-wp-api-admin.js', array('jquery'), $this->version, false);
     }
 
@@ -117,16 +117,6 @@ class Nonfig_Wp_Api_Admin
      */
     public function setup_plugin_options_menu()
     {
-        //Add the menu to the Plugins set of menu items
-        /*
-        add_plugins_page(
-            'WPPB Demo Options',           // The title to be displayed in the browser window for this page.
-            'WPPB Demo Options',          // The text to be displayed for this menu item
-            'manage_options',          // Which type of users can see this menu item
-            'nonfig_wp_api_options',      // The unique ID - that is, the slug - for this menu item
-            array( $this, 'render_settings_page_content')        // The name of the function to call when rendering this menu's page
-        );
-        */
         add_options_page(
             'Nonfig Page',
             'Nonfig - Manage',
