@@ -59,7 +59,6 @@ if ($active_tab == 'content_options' && $keysPresent) {
     ?>
 
 <div>
-    <h1>Wizard goes here</h1>
     <?php
     /*require_once plugin_dir_path(dirname(__FILE__)) . '../vendor/nonfig/php-sdk/index.php';
 
@@ -70,36 +69,17 @@ if ($active_tab == 'content_options' && $keysPresent) {
     $config = $nonfig->findConfigurationByLabels('texas')[0];
     var_dump($config);*/
     ?>
-    <div>
-        You can create a shortcode for three use cases:
-        <table style="padding: 5px;">
-            <tr>
-                <td><strong>Integrate using unique ID</strong></td>
-                <td>[nonfig id=enter-id-here"] show this when cannot resolve [/nonfig]</td>
-            </tr>
-
-            <tr>
-                <td><strong>Integrate using full exact name</strong></td>
-                <td>[nonfig name=enter-fulll-name-here"] show this when cannot resolve [/nonfig]</td>
-            </tr>
-            <tr>
-                <td><strong>Integrate using Labels</strong></td>
-                <td>[nonfig labels=label1,label:2,..."] show this when cannot resolve [/nonfig]</td>
-            </tr>
-            <tr>
-                <td><strong>Integrate using Query Parameters</td>
-                <td>[nonfig paramtype="query" fields="query1,campaign,..."] show this when cannot resolve [/nonfig]</td>
-            </tr>
-        </table>
-    </div>
     <style>
         .generator{}
-        .generator input{width:50%;}
-        .generator table{min-width:50%;}
-        .generator table input{width:100%;}
+        .generator .field{margin:0 0 20px;}
+        .generator .field label{display:block; margin:0px 0px 5px;}
+        .generator input,
+        .generator select{width:300px;}
+        .generator button{padding:10px; margin:10px 0; cursor:pointer;}
     </style>
     <div class="generator">
         <h3>Generate Shortcode</h3>
+        <?php /* ?>
         <h4>By ID</h4>
         <div>
             <table>
@@ -138,24 +118,34 @@ if ($active_tab == 'content_options' && $keysPresent) {
                 <p class="nonfig-label-output"></p>
             </div>
         </div>
-
         <h4>By Query</h4>
+        <?php */ ?>
+
         <div>
-            <table>
-                <tr>
-<!--                    <td><input type="text" class="nonfig-param-type" value="query" disabled/></td>-->
-                    <td><input type="text" class="nonfig-field" placeholder="Field"/></td>
-                    <td><input type="text" class="nonfig-keypath2" placeholder="KeyPath (optional)"/></td>
-                    <td><input type="text" class="nonfig-query-unresolve" value="show this when cannot resolve" /></td>
-                </tr>
-            </table>
+            <div class="field">
+                <label>Parameter Type</label>
+                <select class="nonfig-type">
+                    <option value="query">Query</option>
+                    <option value="url" disabled>URL</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Parameter Name</label>
+                <input type="text" class="nonfig-field" placeholder="Field"/>
+            </div>
+            <div class="field">
+                <label>Nonfig Key Path</label>
+                <input type="text" class="nonfig-keypath2" placeholder="KeyPath (optional)"/>
+            </div>
             <div>
+                <button class="generateShortCode">Generate</button>
                 <p class="nonfig-query-output"></p>
             </div>
         </div>
     </div>
     <script>
         jQuery(function($){
+            /*
             $('body').on('blur','.nonfig-id, .nonfig-id-unresolve',function(){
                 var fildval = $('.nonfig-id').val(),
                     unresl = $('.nonfig-id-unresolve').val();
@@ -191,19 +181,19 @@ if ($active_tab == 'content_options' && $keysPresent) {
                     $('.nonfig-label-output').text('[nonfig labels="enter-fulll-name-here"] '+unresl+' [/nonfig]');
                 }
             });
+*/
 
-
-            $('body').on('blur','.nonfig-field, .nonfig-keypath2, .nonfig-query-unresolve',function(){
-                var fildval = $('.nonfig-field').val(),
-                    keypth = $('.nonfig-keypath2').val(),
-                    unresl = $('.nonfig-query-unresolve').val();
+            $('body').on('click','.generateShortCode',function(){
+                var ftype = $('.nonfig-type').val(),
+                    fildval = $('.nonfig-field').val(),
+                    keypth = $('.nonfig-keypath2').val();
                 if(fildval!=''){
-                    $('.nonfig-query-output').text('[nonfig labels="'+fildval+'"] '+unresl+' [/nonfig]');
+                    $('.nonfig-query-output').text('[nonfig param-type="'+ftype+'" field="'+fildval+'"] show this when cannot resolve [/nonfig]');
                     if(keypth!=''){
-                        $('.nonfig-query-output').text('[nonfig labels="'+fildval+'" keypath="'+keypth+'"] '+unresl+' [/nonfig]');
+                        $('.nonfig-query-output').text('[nonfig param-type="'+ftype+'" field="'+fildval+'" keypath="'+keypth+'"] show this when cannot resolve [/nonfig]');
                     }
                 }else{
-                    $('.nonfig-query-output').text('[nonfig labels="enter-fulll-name-here"] '+unresl+' [/nonfig]');
+                    // $('.nonfig-query-output').text('[nonfig param-type="enter-fulll-name-here"] show this when cannot resolve [/nonfig]');
                 }
             });
 
@@ -211,5 +201,24 @@ if ($active_tab == 'content_options' && $keysPresent) {
     </script>
 </div>
     <?php
+} else {
+?>
+
+    <div>
+        <h2>Usage</h2>
+        <p>You can create a shortcode for three use cases:</p>
+        <table style="padding: 5px;">
+            <tr>
+                <td><strong>Integrate using unique ID</strong></td>
+                <td>[nonfig id="enter-id-here"] show this when cannot resolve [/nonfig]</td>
+            </tr>
+
+            <tr>
+                <td><strong>Integrate using full exact name</strong></td>
+                <td>[nonfig name="enter-fulll-name-here"] show this when cannot resolve [/nonfig]</td>
+            </tr>
+        </table>
+    </div>
+<?php
 }
 ?>

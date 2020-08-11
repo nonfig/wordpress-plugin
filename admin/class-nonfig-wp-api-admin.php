@@ -145,6 +145,8 @@ class Nonfig_Wp_Api_Admin
         $defaults = array(
             'app_id'    =>  '',
             'app_secret'    =>  '',
+            'cache_active'    =>  '',
+            'cache_duration'    =>  '',
         );
         return $defaults;
     }
@@ -180,7 +182,7 @@ class Nonfig_Wp_Api_Admin
         );
         // Next, we'll introduce the fields for toggling the visibility of content elements.
         add_settings_field(
-            'show_header',                    // ID used to identify the field throughout the theme
+            'app_id_field',                    // ID used to identify the field throughout the theme
             __('Application ID', 'nonfig_wp_api'),          // The label to the left of the option interface element
             array($this, 'app_id_callback'),  // The name of the function responsible for rendering the option interface
             'nonfig_api_key_option',              // The page on which this option will be displayed
@@ -190,9 +192,29 @@ class Nonfig_Wp_Api_Admin
             )
         );
         add_settings_field(
-            'show_content',
+            'app_secret_field',
             __('Application Secret', 'nonfig_wp_api'),
             array($this, 'app_secret_callback'),
+            'nonfig_api_key_option',
+            'general_settings_section',
+            array(
+                __('Activate this setting to display the content.', 'nonfig_wp_api'),
+            )
+        );
+        add_settings_field(
+            'cache_active_field',
+            __('Cache Active', 'nonfig_wp_api'),
+            array($this, 'cache_active_callback'),
+            'nonfig_api_key_option',
+            'general_settings_section',
+            array(
+                __('Activate this setting to display the content.', 'nonfig_wp_api'),
+            )
+        );
+        add_settings_field(
+            'cache_duration_field',
+            __('Cache Duration', 'nonfig_wp_api'),
+            array($this, 'cache_duration_callback'),
             'nonfig_api_key_option',
             'general_settings_section',
             array(
@@ -215,7 +237,7 @@ class Nonfig_Wp_Api_Admin
             $valu = $options['app_id'];
         } // end if
         // Render the output
-        echo '<input style="width: 40%;" type="text" id="fieldAppId" name="nonfig_api_key_option[app_id]" value="' . $valu . '" />';
+        echo '<input style="width: 60%;" type="text" id="fieldAppId" name="nonfig_api_key_option[app_id]" value="' . $valu . '" />';
     }
     public function app_secret_callback()
     {
@@ -227,7 +249,38 @@ class Nonfig_Wp_Api_Admin
             $valu = $options['app_secret'];
         } // end if
         // Render the output
-        echo '<input type="text" style="width: 40%;" id="fieldAppSecret" name="nonfig_api_key_option[app_secret]" value="' . $valu . '" />';
+        echo '<input type="text" style="width: 60%;" id="fieldAppSecret" name="nonfig_api_key_option[app_secret]" value="' . $valu . '" />';
+    }
+    public function cache_active_callback()
+    {
+        // First, we read the social options collection
+        $options = get_option('nonfig_api_key_option');
+        // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
+        $valu = '';
+        if (isset($options['cache_active'])) {
+            $valu = $options['cache_active'];
+        } // end if
+        // Render the output
+        echo '<input type="checkbox" id="fieldAppSecret" name="nonfig_api_key_option[cache_active]" value="' . $valu . '" />';
+    }
+    public function cache_duration_callback()
+    {
+        // First, we read the social options collection
+        $options = get_option('nonfig_api_key_option');
+        // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
+        $valu = '';
+        if (isset($options['cache_duration'])) {
+            $valu = $options['cache_duration'];
+        } // end if
+        // Render the output
+        ?> <select name="cache_duration[cache_duration_field]" id="dropdown_option_0">
+        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1min') ? 'selected' : '' ; ?>
+        <option value="dur-1min" <?php echo $selected; ?>>1 Minute</option>
+        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1hr') ? 'selected' : '' ; ?>
+        <option value="dur-1hr" <?php echo $selected; ?>>1 Hour</option>
+        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1day') ? 'selected' : '' ; ?>
+        <option value="dur-1day" <?php echo $selected; ?>>1 Day</option>
+    </select> <?php
     }
 
     /**

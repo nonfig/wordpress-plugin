@@ -115,7 +115,6 @@ class Nonfig_Wp_Api_Public {
         extract(shortcode_atts(array(
             'id' => '',
             'name' => '',
-            'labels' => '',
             'keypath' => '',
             'param-type' => '',
             'fields' => ''
@@ -123,11 +122,16 @@ class Nonfig_Wp_Api_Public {
         $nonfig_api_keys = get_option('nonfig_api_key_option');
         if(!empty($nonfig_api_keys['app_id']) && !empty($nonfig_api_keys['app_secret']) ){
 //            return $nonfig_api_keys['app_id']." - ".$nonfig_api_keys['app_secret']." - ".$atts['path'];
+
+            $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
+
             if(!empty($atts['id'])){
                 try {
-                    $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
                     $configPath = $nonfig->findConfigurationById($atts['id']);
                     $stringoutput=$configPath[0]->data;
+                    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
+                        $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
+                    }
                     return $stringoutput;
                 }
                 catch(Exception $e) {
@@ -137,9 +141,11 @@ class Nonfig_Wp_Api_Public {
             }
             else if(!empty($atts['name'])){
                 try {
-                    $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
                     $configPath = $nonfig->findConfigurationByName($atts['name']);
                     $stringoutput=$configPath[0]->data;
+                    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
+                        $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
+                    }
                     return $stringoutput;
                 }
                 catch(Exception $e) {
@@ -147,23 +153,16 @@ class Nonfig_Wp_Api_Public {
                     return $content;
                 }
             }
-            else if(!empty($atts['labels'])){
-                try {
-                    $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
-                    $stringoutput=$this->label_content_filter($nonfig,$atts['labels'],$atts);
-                    return $stringoutput;
-                }
-                catch(Exception $e) {
-//                    return 'Message: ' .$e->getMessage();
-                    return $content;
-                }
-            }
             else if(!empty($atts['param-type'])){
                 if($atts['param-type']=='query' && !empty($atts['field'])){
                     try {
-                        $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
                         $paramval = $_GET[$atts['field']];
-                        $stringoutput=$this->label_content_filter($nonfig,$paramval,$atts);
+                        $configPath = $nonfig->findConfigurationByLabels($paramval);
+                        $stringoutput=$configPath[0]->data;
+                        if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
+                            $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
+                        }
+
                         return $stringoutput;
                     }
                     catch(Exception $e) {
@@ -185,20 +184,16 @@ class Nonfig_Wp_Api_Public {
 
     }
 
-    public function label_content_filter($nonfig,$label,$atts){
+    public function keypath_filter($data,$keypath){
 //        require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
-        $configPath = $nonfig->findConfigurationByLabels($label);
 
-	    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
-            $jsonoutput=json_decode($configPath[0]->data);
-            if(strpos($atts['keypath'], '.')>=0){
 
-//                $stringoutput = _::get($jsonoutput, $atts['keypath'], "default");
+            $jsonoutput=json_decode($data);
+            /*if(strpos($keypath, '.')>=0){
+                $stringoutput = _::get($jsonoutput, $atts['keypath'], "default");
             }
-            else{
-
-            }
-            $stringoutput = $jsonoutput->{$atts['keypath']};
+            else{ }*/
+            $stringoutput = $jsonoutput->{$keypath};
 
             /*foreach($jsonoutput as $keyp=>$item){
                 if(strpos($atts['keypath'], '.')>=0){
@@ -210,10 +205,8 @@ class Nonfig_Wp_Api_Public {
                 else if($keyp==$atts['keypath']){$stringoutput=$item;}
 
             }*/
-        }
-	    else{
-            $stringoutput=$configPath[0]->data;
-        }
+
+
         return $stringoutput;
     }
 

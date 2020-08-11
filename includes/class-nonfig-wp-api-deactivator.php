@@ -33,4 +33,10 @@ class Nonfig_Wp_Api_Deactivator {
 
 	}
 
+    public static function nonfig_cache_db_uninstall() {
+        global $wpdb;
+        $table_name = 'nonfig_' . $wpdb->prefix . "cache";
+        $wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
+    }
+
 }
