@@ -84,7 +84,7 @@ class Nonfig_Wp_Api_Admin
          * between the defined hooks and the functions defined in this
          * class.
          */
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/materialize.min.css', array(), $this->version, 'all' );
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/materialize.min.css', array(), $this->version, 'all');
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nonfig-wp-api-admin.css', array(), $this->version, 'all');
     }
 
@@ -263,61 +263,61 @@ class Nonfig_Wp_Api_Admin
             $valu = $options['cache_duration'];
         } // end if
         // Render the output
-        ?> <select name="cache_duration[cache_duration_field]" id="dropdown_option_0">
-        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1min') ? 'selected' : '' ; ?>
-        <option value="dur-1min" <?php echo $selected; ?>>1 Minute</option>
-        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1hr') ? 'selected' : '' ; ?>
-        <option value="dur-1hr" <?php echo $selected; ?>>1 Hour</option>
-        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1day') ? 'selected' : '' ; ?>
-        <option value="dur-1day" <?php echo $selected; ?>>1 Day</option>
-    </select> <?php
-    }
+?> <select name="cache_duration[cache_duration_field]" id="dropdown_option_0">
+            <?php $selected = (isset($valu['cache_duration_field']) && $valu['cache_duration_field'] === 'dur-1min') ? 'selected' : ''; ?>
+            <option value="dur-1min" <?php echo $selected; ?>>1 Minute</option>
+            <?php $selected = (isset($valu['cache_duration_field']) && $valu['cache_duration_field'] === 'dur-1hr') ? 'selected' : ''; ?>
+            <option value="dur-1hr" <?php echo $selected; ?>>1 Hour</option>
+            <?php $selected = (isset($valu['cache_duration_field']) && $valu['cache_duration_field'] === 'dur-1day') ? 'selected' : ''; ?>
+            <option value="dur-1day" <?php echo $selected; ?>>1 Day</option>
+        </select> <?php
+                }
 
-    /**
-     * Initializes the theme's social options by registering the Sections,
-     * Fields, and Settings.
-     *
-     * This function is registered with the 'admin_init' hook.
-     */
-    public function initialize_content_options()
-    {
-    }
+                /**
+                 * Initializes the theme's social options by registering the Sections,
+                 * Fields, and Settings.
+                 *
+                 * This function is registered with the 'admin_init' hook.
+                 */
+                public function initialize_content_options()
+                {
+                }
 
-    /**
-     * Sanitization callback for the social options. Since each of the social options are text inputs,
-     * this function loops through the incoming option and strips all tags and slashes from the value
-     * before serializing it.
-     *
-     * @params  $input  The unsanitized collection of options.
-     *
-     * @returns      The collection of sanitized values.
-     */
-    public function sanitize_content_options($input)
-    {
-        // Define the array for the updated options
-        $output = array();
-        // Loop through each of the options sanitizing the data
-        foreach ($input as $key => $val) {
-            if (isset($input[$key])) {
-                $output[$key] = esc_url_raw(strip_tags(stripslashes($input[$key])));
-            } // end if
-        } // end foreach
-        // Return the new collection
-        return apply_filters('sanitize_content_options', $output, $input);
-    } // end sanitize_content_options
-    public function validate_input_examples($input)
-    {
-        // Create our array for storing the validated options
-        $output = array();
-        // Loop through each of the incoming options
-        foreach ($input as $key => $value) {
-            // Check to see if the current option has a value. If so, process it.
-            if (isset($input[$key])) {
-                // Strip all HTML and PHP tags and properly handle quoted strings
-                $output[$key] = strip_tags(stripslashes($input[$key]));
-            } // end if
-        } // end foreach
-        // Return the array processing any additional functions filtered by this action
-        return apply_filters('validate_input_examples', $output, $input);
-    } // end validate_input_examples
-}
+                /**
+                 * Sanitization callback for the social options. Since each of the social options are text inputs,
+                 * this function loops through the incoming option and strips all tags and slashes from the value
+                 * before serializing it.
+                 *
+                 * @params  $input  The unsanitized collection of options.
+                 *
+                 * @returns      The collection of sanitized values.
+                 */
+                public function sanitize_content_options($input)
+                {
+                    // Define the array for the updated options
+                    $output = array();
+                    // Loop through each of the options sanitizing the data
+                    foreach ($input as $key => $val) {
+                        if (isset($input[$key])) {
+                            $output[$key] = esc_url_raw(strip_tags(stripslashes($input[$key])));
+                        } // end if
+                    } // end foreach
+                    // Return the new collection
+                    return apply_filters('sanitize_content_options', $output, $input);
+                } // end sanitize_content_options
+                public function validate_input_examples($input)
+                {
+                    // Create our array for storing the validated options
+                    $output = array();
+                    // Loop through each of the incoming options
+                    foreach ($input as $key => $value) {
+                        // Check to see if the current option has a value. If so, process it.
+                        if (isset($input[$key])) {
+                            // Strip all HTML and PHP tags and properly handle quoted strings
+                            $output[$key] = strip_tags(stripslashes($input[$key]));
+                        } // end if
+                    } // end foreach
+                    // Return the array processing any additional functions filtered by this action
+                    return apply_filters('validate_input_examples', $output, $input);
+                } // end validate_input_examples
+            }
