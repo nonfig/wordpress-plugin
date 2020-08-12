@@ -136,6 +136,7 @@ class Nonfig_Wp_Api_Admin
             'app_id'    =>  '',
             'app_secret'    =>  '',
             'cache_active'    =>  '',
+            'last_cache'    =>  '',
             'cache_duration'    =>  '',
         );
         return $defaults;
@@ -247,11 +248,44 @@ class Nonfig_Wp_Api_Admin
         $options = get_option('nonfig_api_key_option');
         // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
         $valu = '';
-        if (isset($options['cache_active'])) {
-            $valu = $options['cache_active'];
-        } // end if
+        $curentTime = microtime(true);
+        if (isset($options['cache_active'])) {$valu = $options['cache_active'];}
+        if (isset($options['last_cache'])) {$lastCache = $options['last_cache'];} // end if
+        if(!empty($lastCache)){$lastCache = $lastCache;$lastCache=gmdate("d/m/Y h:i:s a", $lastCache);}
+        if(!$valu){$lastCacheTxt='';}else{$lastCacheTxt='(Last Cache: '.$lastCache.')';}
         // Render the output
-        echo '<input type="checkbox" id="fieldAppSecret" name="nonfig_api_key_option[cache_active]" value="' . $valu . '" />';
+        echo '<label> <input type="checkbox" id="fieldCacheActive" name="nonfig_api_key_option[cache_active]" value="1"' . checked( 1, $valu, false ) . '/> <span>Active '.$lastCacheTxt.'</span><input type="hidden" id="fieldLastCache" name="nonfig_api_key_option[last_cache]" value="'.$curentTime.'"/> </label>';
+        ?>
+        <script>
+            jQuery(function($){
+                /*var fieldLastCache = $('#fieldLastCache');
+                $('#fieldLastCache').remove();
+                // $('#fieldCacheActive').parent().append(fieldLastCache);
+                $('#fieldCacheActive').on('change',function(){
+                    if($('#fieldCacheActive').is(':checked')){
+                        $('#fieldLastCache').remove();
+                    } else {
+                        $('#fieldCacheActive').parent().append(fieldLastCache);
+                        $('#fieldLastCache').val(0);
+                    }
+                });*/
+                $('#fieldCacheActive').on('change',function(){
+                    $(this).addClass('changed');
+                });
+                /*$('#wpbody-content form').submit(function(event){
+                    var fieldLastCache = $('#fieldLastCache').val();
+                    if(!$('#fieldCacheActive').hasClass('changed')){
+                        $('#fieldLastCache').remove();
+                    } else {
+                        $('#fieldCacheActive').parent().append(fieldLastCache);
+                        $('#fieldLastCache').val(0);
+                    }
+
+                });*/
+            });
+        </script>
+        <?php
+
     }
     public function cache_duration_callback()
     {
@@ -263,61 +297,74 @@ class Nonfig_Wp_Api_Admin
             $valu = $options['cache_duration'];
         } // end if
         // Render the output
-?> <select name="cache_duration[cache_duration_field]" id="dropdown_option_0">
-            <?php $selected = (isset($valu['cache_duration_field']) && $valu['cache_duration_field'] === 'dur-1min') ? 'selected' : ''; ?>
-            <option value="dur-1min" <?php echo $selected; ?>>1 Minute</option>
-            <?php $selected = (isset($valu['cache_duration_field']) && $valu['cache_duration_field'] === 'dur-1hr') ? 'selected' : ''; ?>
-            <option value="dur-1hr" <?php echo $selected; ?>>1 Hour</option>
-            <?php $selected = (isset($valu['cache_duration_field']) && $valu['cache_duration_field'] === 'dur-1day') ? 'selected' : ''; ?>
-            <option value="dur-1day" <?php echo $selected; ?>>1 Day</option>
-        </select> <?php
-                }
+        echo '<input type="text" style="width: 60%;" id="fieldCacheDuration" name="nonfig_api_key_option[cache_duration]" value="' . $valu . '" />';
+    }
+    public function cache_duration_callback_dropdown()
+    {
+        // First, we read the social options collection
+        $options = get_option('nonfig_api_key_option');
+        // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
+        $valu = '';
+        if (isset($options['cache_duration'])) {
+            $valu = $options['cache_duration'];
+        } // end if
+        // Render the output
+        ?> <select name="cache_duration[cache_duration_field]" id="dropdown_option_0">
+        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1min') ? 'selected' : '' ; ?>
+        <option value="dur-1min" <?php echo $selected; ?>>1 Minute</option>
+        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1hr') ? 'selected' : '' ; ?>
+        <option value="dur-1hr" <?php echo $selected; ?>>1 Hour</option>
+        <?php $selected = (isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1day') ? 'selected' : '' ; ?>
+        <option value="dur-1day" <?php echo $selected; ?>>1 Day</option>
+    </select> <?php
+    }
 
-                /**
-                 * Initializes the theme's social options by registering the Sections,
-                 * Fields, and Settings.
-                 *
-                 * This function is registered with the 'admin_init' hook.
-                 */
-                public function initialize_content_options()
-                {
-                }
 
-                /**
-                 * Sanitization callback for the social options. Since each of the social options are text inputs,
-                 * this function loops through the incoming option and strips all tags and slashes from the value
-                 * before serializing it.
-                 *
-                 * @params  $input  The unsanitized collection of options.
-                 *
-                 * @returns      The collection of sanitized values.
-                 */
-                public function sanitize_content_options($input)
-                {
-                    // Define the array for the updated options
-                    $output = array();
-                    // Loop through each of the options sanitizing the data
-                    foreach ($input as $key => $val) {
-                        if (isset($input[$key])) {
-                            $output[$key] = esc_url_raw(strip_tags(stripslashes($input[$key])));
-                        } // end if
-                    } // end foreach
-                    // Return the new collection
-                    return apply_filters('sanitize_content_options', $output, $input);
-                } // end sanitize_content_options
-                public function validate_input_examples($input)
-                {
-                    // Create our array for storing the validated options
-                    $output = array();
-                    // Loop through each of the incoming options
-                    foreach ($input as $key => $value) {
-                        // Check to see if the current option has a value. If so, process it.
-                        if (isset($input[$key])) {
-                            // Strip all HTML and PHP tags and properly handle quoted strings
-                            $output[$key] = strip_tags(stripslashes($input[$key]));
-                        } // end if
-                    } // end foreach
-                    // Return the array processing any additional functions filtered by this action
-                    return apply_filters('validate_input_examples', $output, $input);
-                } // end validate_input_examples
-            }
+    /**
+     * Initializes the theme's social options by registering the Sections,
+     * Fields, and Settings.
+     *
+     * This function is registered with the 'admin_init' hook.
+     */
+    public function initialize_content_options()
+    {
+    }
+
+    /**
+     * Sanitization callback for the social options. Since each of the social options are text inputs,
+     * this function loops through the incoming option and strips all tags and slashes from the value
+     * before serializing it.
+     *
+     * @params  $input  The unsanitized collection of options.
+     *
+     * @returns      The collection of sanitized values.
+     */
+    public function sanitize_content_options($input)
+    {
+        // Define the array for the updated options
+        $output = array();
+        // Loop through each of the options sanitizing the data
+        foreach ($input as $key => $val) {
+            if (isset($input[$key])) {
+                $output[$key] = esc_url_raw(strip_tags(stripslashes($input[$key])));
+            } // end if
+        } // end foreach
+        // Return the new collection
+        return apply_filters('sanitize_content_options', $output, $input);
+    } // end sanitize_content_options
+    public function validate_input_examples($input)
+    {
+        // Create our array for storing the validated options
+        $output = array();
+        // Loop through each of the incoming options
+        foreach ($input as $key => $value) {
+            // Check to see if the current option has a value. If so, process it.
+            if (isset($input[$key])) {
+                // Strip all HTML and PHP tags and properly handle quoted strings
+                $output[$key] = strip_tags(stripslashes($input[$key]));
+            } // end if
+        } // end foreach
+        // Return the array processing any additional functions filtered by this action
+        return apply_filters('validate_input_examples', $output, $input);
+    } // end validate_input_examples
+}

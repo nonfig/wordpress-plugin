@@ -43,6 +43,7 @@ class Nonfig_Wp_Api_Activator {
               time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
               cache_dur datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
               nonfig_value varchar(128) NOT NULL default '',
+              nonfig_result text NOT NULL default '',
               PRIMARY KEY  (id)
             ) $charset_collate;";
 
@@ -60,6 +61,7 @@ class Nonfig_Wp_Api_Activator {
                 'time' => current_time( 'mysql' ),
                 'cache_dur' => current_time( 'mysql' ),
                 'nonfig_value' => '',
+                'nonfig_result' => '',
             )
         );
     }

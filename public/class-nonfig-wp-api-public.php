@@ -124,6 +124,11 @@ class Nonfig_Wp_Api_Public {
 //            return $nonfig_api_keys['app_id']." - ".$nonfig_api_keys['app_secret']." - ".$atts['path'];
 
             $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
+            $isCacheActive = $nonfig_api_keys['cache_active'];
+            $data_present_in_db = false;
+
+            global $wpdb;
+            $table_name = 'nonfig_' . $wpdb->prefix . "cache";
 
             if(!empty($atts['id'])){
                 try {
@@ -141,6 +146,15 @@ class Nonfig_Wp_Api_Public {
             }
             else if(!empty($atts['name'])){
                 try {
+                    if($isCacheActive){
+                        $data_to_retrieve = 'name:'.$atts['name'];
+                        $retrieve_data = $wpdb->get_results("SELECT * FROM $table_name WHERE nonfig_value = $data_to_retrieve");
+                        if(count($retrieve_data)!=0){
+                            if($retrieve_data[0]->cache_dur){}
+                            $stringoutput = $retrieve_data[0]->nonfig_result;
+                            return $stringoutput;
+                        }
+                    }
                     $configPath = $nonfig->findConfigurationByName($atts['name']);
                     $stringoutput=$configPath[0]->data;
                     if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
