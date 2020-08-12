@@ -19,7 +19,7 @@
  *
  * @package    Nonfig_Wp_Api
  * @subpackage Nonfig_Wp_Api/includes
- * @author     Azim Khan <akhan_24@hotmail.com>
+ * @author     Nonfig <hello@nonfig.com>
  */
 class Nonfig_Wp_Api_Loader {
 
@@ -102,7 +102,7 @@ class Nonfig_Wp_Api_Loader {
 			'component'     => $component,
 			'callback'      => $callback,
 			'priority'      => $priority,
-			'accepted_args' => $accepted_args
+			'accepted_args' => $accepted_args,
 		);
 
 		return $hooks;

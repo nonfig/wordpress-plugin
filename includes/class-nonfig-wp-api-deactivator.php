@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    Nonfig_Wp_Api
  * @subpackage Nonfig_Wp_Api/includes
- * @author     Azim Khan <akhan_24@hotmail.com>
+ * @author     Nonfig <hello@nonfig.com>
  */
 class Nonfig_Wp_Api_Deactivator {
 
@@ -33,10 +33,10 @@ class Nonfig_Wp_Api_Deactivator {
 
 	}
 
-    public static function nonfig_cache_db_uninstall() {
-        global $wpdb;
-        $table_name = 'nonfig_' . $wpdb->prefix . "cache";
-        $wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
-    }
+	public static function nonfig_cache_db_uninstall() {
+		global $wpdb;
+		$table_name = 'nonfig_' . $wpdb->prefix . 'cache';
+		$wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
+	}
 
 }

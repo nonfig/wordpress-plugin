@@ -29,6 +29,9 @@ the example above only validates `/admin` folder. Essentially, we will validate 
 
 You would have wordpress running on port: `7777` and volume at `~/nonfig-wordpress` directory.
 
-# Author
+# Contributors
 
-The package is maintained by Nonfig and open for public contributions.
+The package is maintained by Nonfig and open for public contributions. You can get to know a feature today:
+
+- [@Azim Khan](https://github.com/akhan24)
+- [@Arkeologen](https://github.com/arkeologen)

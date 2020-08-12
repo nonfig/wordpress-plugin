@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Nonfig_Wp_Api
  * @subpackage Nonfig_Wp_Api/includes
- * @author     Azim Khan <akhan_24@hotmail.com>
+ * @author     Nonfig <hello@nonfig.com>
  */
 class Nonfig_Wp_Api {
 
@@ -156,13 +156,13 @@ class Nonfig_Wp_Api {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-//        $this->loader->add_action( 'admin_menu', $plugin_admin, 'add_options_page' );
+		//        $this->loader->add_action( 'admin_menu', $plugin_admin, 'add_options_page' );
 
-//        $plugin_settings = new Enym_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
-        $this->loader->add_action( 'admin_menu', $plugin_admin, 'setup_plugin_options_menu' );
-        $this->loader->add_action( 'admin_init', $plugin_admin, 'initialize_api_key_option' );
-        $this->loader->add_action( 'admin_init', $plugin_admin, 'initialize_content_options' );
-//        $this->loader->add_action( 'admin_init', $plugin_admin, 'initialize_input_examples' );
+		//        $plugin_settings = new Enym_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'setup_plugin_options_menu' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'initialize_api_key_option' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'initialize_content_options' );
+		//        $this->loader->add_action( 'admin_init', $plugin_admin, 'initialize_input_examples' );
 
 	}
 
@@ -179,7 +179,7 @@ class Nonfig_Wp_Api {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-        $this->loader->add_action( 'init', $plugin_public, 'nonfig_content_shortcode' );
+		$this->loader->add_action( 'init', $plugin_public, 'nonfig_content_shortcode' );
 
 	}
 

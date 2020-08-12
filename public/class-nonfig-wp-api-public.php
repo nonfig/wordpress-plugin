@@ -18,7 +18,7 @@
  *
  * @package    Nonfig_Wp_Api
  * @subpackage Nonfig_Wp_Api/public
- * @author     Azim Khan <akhan_24@hotmail.com>
+ * @author     Nonfig <hello@nonfig.com>
  */
 class Nonfig_Wp_Api_Public {
 
@@ -50,7 +50,7 @@ class Nonfig_Wp_Api_Public {
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -102,113 +102,107 @@ class Nonfig_Wp_Api_Public {
 
 
 
-    public function nonfig_content_shortcode(){
-        add_shortcode('nonfig', array( $this, 'nonfig_shortcode_function'));
-    }
+	public function nonfig_content_shortcode() {
+		add_shortcode( 'nonfig', array( $this, 'nonfig_shortcode_function' ) );
+	}
 
-    public function nonfig_shortcode_function( $atts = array(), $content = null ) {
+	public function nonfig_shortcode_function( $atts = array(), $content = null ) {
 
-        require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/nonfig/php-sdk/index.php';
 
+		// set up default parameters
+		extract(
+			shortcode_atts(
+				array(
+					'id'         => '',
+					'name'       => '',
+					'keypath'    => '',
+					'param-type' => '',
+					'fields'     => '',
+				),
+				$atts
+			)
+		);
+		$nonfig_api_keys = get_option( 'nonfig_api_key_option' );
+		if ( ! empty( $nonfig_api_keys['app_id'] ) && ! empty( $nonfig_api_keys['app_secret'] ) ) {
+			//            return $nonfig_api_keys['app_id']." - ".$nonfig_api_keys['app_secret']." - ".$atts['path'];
 
-        // set up default parameters
-        extract(shortcode_atts(array(
-            'id' => '',
-            'name' => '',
-            'keypath' => '',
-            'param-type' => '',
-            'fields' => ''
-        ), $atts));
-        $nonfig_api_keys = get_option('nonfig_api_key_option');
-        if(!empty($nonfig_api_keys['app_id']) && !empty($nonfig_api_keys['app_secret']) ){
-//            return $nonfig_api_keys['app_id']." - ".$nonfig_api_keys['app_secret']." - ".$atts['path'];
+			$nonfig = new Nonfig( $nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret'] );
 
-            $nonfig = new Nonfig($nonfig_api_keys['app_id'], $nonfig_api_keys['app_secret']);
+			if ( ! empty( $atts['id'] ) ) {
+				try {
+					$configPath   = $nonfig->findConfigurationById( $atts['id'] );
+					$stringoutput = $configPath[0]->data;
+					if ( ! empty( $atts['keypath'] ) && $configPath[0]->type == 'JSON' ) {
+						$stringoutput = $this->keypath_filter( $stringoutput, $atts['keypath'] );
+					}
+					return $stringoutput;
+				} catch ( Exception $e ) {
+					//return 'Message: ' .$e->getMessage();
+					return $content;
+				}
+			} elseif ( ! empty( $atts['name'] ) ) {
+				try {
+					$configPath   = $nonfig->findConfigurationByName( $atts['name'] );
+					$stringoutput = $configPath[0]->data;
+					if ( ! empty( $atts['keypath'] ) && $configPath[0]->type == 'JSON' ) {
+						$stringoutput = $this->keypath_filter( $stringoutput, $atts['keypath'] );
+					}
+					return $stringoutput;
+				} catch ( Exception $e ) {
+					//return 'Message: ' .$e->getMessage();
+					return $content;
+				}
+			} elseif ( ! empty( $atts['param-type'] ) ) {
+				if ( $atts['param-type'] == 'query' && ! empty( $atts['field'] ) ) {
+					try {
+						$paramval     = $_GET[ $atts['field'] ];
+						$configPath   = $nonfig->findConfigurationByLabels( $paramval );
+						$stringoutput = $configPath[0]->data;
+						if ( ! empty( $atts['keypath'] ) && $configPath[0]->type == 'JSON' ) {
+							$stringoutput = $this->keypath_filter( $stringoutput, $atts['keypath'] );
+						}
 
-            if(!empty($atts['id'])){
-                try {
-                    $configPath = $nonfig->findConfigurationById($atts['id']);
-                    $stringoutput=$configPath[0]->data;
-                    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
-                        $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
-                    }
-                    return $stringoutput;
-                }
-                catch(Exception $e) {
-                    //return 'Message: ' .$e->getMessage();
-                    return $content;
-                }
-            }
-            else if(!empty($atts['name'])){
-                try {
-                    $configPath = $nonfig->findConfigurationByName($atts['name']);
-                    $stringoutput=$configPath[0]->data;
-                    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
-                        $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
-                    }
-                    return $stringoutput;
-                }
-                catch(Exception $e) {
-                    //return 'Message: ' .$e->getMessage();
-                    return $content;
-                }
-            }
-            else if(!empty($atts['param-type'])){
-                if($atts['param-type']=='query' && !empty($atts['field'])){
-                    try {
-                        $paramval = $_GET[$atts['field']];
-                        $configPath = $nonfig->findConfigurationByLabels($paramval);
-                        $stringoutput=$configPath[0]->data;
-                        if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
-                            $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
-                        }
+						return $stringoutput;
+					} catch ( Exception $e ) {
+						//                    return 'Message: ' .$e->getMessage();
+						return $content;
+					}
+				} else {
+					return $content;
+				}
+			} else {
+				return $content;
+			}
+		} else {
+			return "Error: Keys not present or 'path' missing.";
+		}
 
-                        return $stringoutput;
-                    }
-                    catch(Exception $e) {
-//                    return 'Message: ' .$e->getMessage();
-                        return $content;
-                    }
-                } else {
-                    return $content;
-                }
+	}
 
-            } else {
-                return $content;
-            }
+	public function keypath_filter( $data, $keypath ) {
+		//        require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
 
-        } else {
-            return "Error: Keys not present or 'path' missing.";
-        }
+			$jsonoutput = json_decode( $data );
+			/*if(strpos($keypath, '.')>=0){
+				$stringoutput = _::get($jsonoutput, $atts['keypath'], "default");
+			}
+			else{ }*/
+			$stringoutput = $jsonoutput->{$keypath};
 
+			/*foreach($jsonoutput as $keyp=>$item){
+				if(strpos($atts['keypath'], '.')>=0){
+					$arrayobj = explode('.',$atts['keypath']);
+					foreach($arrayobj as $initem){
 
-    }
+					}
+				}
+				else if($keyp==$atts['keypath']){$stringoutput=$item;}
 
-    public function keypath_filter($data,$keypath){
-//        require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
+			}*/
 
-
-            $jsonoutput=json_decode($data);
-            /*if(strpos($keypath, '.')>=0){
-                $stringoutput = _::get($jsonoutput, $atts['keypath'], "default");
-            }
-            else{ }*/
-            $stringoutput = $jsonoutput->{$keypath};
-
-            /*foreach($jsonoutput as $keyp=>$item){
-                if(strpos($atts['keypath'], '.')>=0){
-                    $arrayobj = explode('.',$atts['keypath']);
-                    foreach($arrayobj as $initem){
-
-                    }
-                }
-                else if($keyp==$atts['keypath']){$stringoutput=$item;}
-
-            }*/
-
-
-        return $stringoutput;
-    }
+		return $stringoutput;
+	}
 
 
 }

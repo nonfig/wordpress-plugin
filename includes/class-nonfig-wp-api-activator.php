@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    Nonfig_Wp_Api
  * @subpackage Nonfig_Wp_Api/includes
- * @author     Azim Khan <akhan_24@hotmail.com>
+ * @author     Nonfig <hello@nonfig.com>
  */
 class Nonfig_Wp_Api_Activator {
 
@@ -34,11 +34,11 @@ class Nonfig_Wp_Api_Activator {
 	}
 
 
-    public static function nonfig_cache_db_install() {
-        global $wpdb;
-        $table_name = 'nonfig_' . $wpdb->prefix . "cache";
-        $charset_collate = $wpdb->get_charset_collate();
-        $sql = "CREATE TABLE $table_name (
+	public static function nonfig_cache_db_install() {
+		global $wpdb;
+		$table_name      = 'nonfig_' . $wpdb->prefix . 'cache';
+		$charset_collate = $wpdb->get_charset_collate();
+		$sql             = "CREATE TABLE $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
               time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
               cache_dur datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
@@ -46,21 +46,21 @@ class Nonfig_Wp_Api_Activator {
               PRIMARY KEY  (id)
             ) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta( $sql );
-    }
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql );
+	}
 
-    function add_entry(){
-        global $wpdb;
-        $table_name = 'nonfig_' . $wpdb->prefix . "cache";
+	function add_entry() {
+		global $wpdb;
+		$table_name = 'nonfig_' . $wpdb->prefix . 'cache';
 
-        $wpdb->insert(
-            $table_name,
-            array(
-                'time' => current_time( 'mysql' ),
-                'cache_dur' => current_time( 'mysql' ),
-                'nonfig_value' => '',
-            )
-        );
-    }
+		$wpdb->insert(
+			$table_name,
+			array(
+				'time'         => current_time( 'mysql' ),
+				'cache_dur'    => current_time( 'mysql' ),
+				'nonfig_value' => '',
+			)
+		);
+	}
 }
