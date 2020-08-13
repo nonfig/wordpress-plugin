@@ -1,4 +1,4 @@
-=== Nonfig Wordress Plugin ===
+=== Nonfig ===
 Contributors: nonfig
 Donate link: https://www.nonfig.com
 Tags: nonfig, headless, cms, configuration, configuration management
