@@ -22,13 +22,19 @@ docker-compose -f stack.yml up
 We are using PHP Code Sniffer (phpcs) to lint the code and `phpcbf` to automatically fix the suggestions as well. To writing, we are using `PSR2` standard that may change overtime.
 
 ```
-./vendor/bin/phpcbf ./admin --standard=PSR2 --extensions=php
+composer global require "wp-coding-standards/wpcs"
+./vendor/bin/phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+./vendor/bin/phpcs --config-set default_standard WordPress-Extra
+./vendor/bin/phpcbf ./admin --extensions=php
 ```
 
 the example above only validates `/admin` folder. Essentially, we will validate everything.
 
 You would have wordpress running on port: `7777` and volume at `~/nonfig-wordpress` directory.
 
-# Author
+# Contributors
 
-The package is maintained by Nonfig and open for public contributions.
+The package is maintained by Nonfig and open for public contributions. You can get to know a feature today:
+
+- [@Azim Khan](https://github.com/akhan24)
+- [@Arkeologen](https://github.com/arkeologen)

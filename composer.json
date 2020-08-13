@@ -6,5 +6,8 @@
     "require": {
         "squizlabs/php_codesniffer": "*",
         "nonfig/php-sdk": "*"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "*"
     }
 }
