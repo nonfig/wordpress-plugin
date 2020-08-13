@@ -137,6 +137,7 @@ class Nonfig_Wp_Api_Admin
             'app_secret'    =>  '',
             'cache_active'    =>  '',
             'last_cache'    =>  '',
+            'next_cache'    =>  '',
             'cache_duration'    =>  '',
         );
         return $defaults;
@@ -194,7 +195,7 @@ class Nonfig_Wp_Api_Admin
         );
         add_settings_field(
             'cache_active_field',
-            __('Cache Active', 'nonfig_wp_api'),
+            __('Enable Cache', 'nonfig_wp_api'),
             array($this, 'cache_active_callback'),
             'nonfig_api_key_option',
             'general_settings_section',
@@ -247,44 +248,46 @@ class Nonfig_Wp_Api_Admin
         // First, we read the social options collection
         $options = get_option('nonfig_api_key_option');
         // Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
-        $valu = '';
+        $valu = '';$lastCacheFormated='';$nextCache=0;
         $curentTime = microtime(true);
         if (isset($options['cache_active'])) {$valu = $options['cache_active'];}
         if (isset($options['last_cache'])) {$lastCache = $options['last_cache'];} // end if
-        if(!empty($lastCache)){$lastCache = $lastCache;$lastCache=gmdate("d/m/Y h:i:s a", $lastCache);}
-        if(!$valu){$lastCacheTxt='';}else{$lastCacheTxt='(Last Cache: '.$lastCache.')';}
+        if(!empty($lastCache)){
+            $nextCache=$lastCache+$options['cache_duration'];
+            $lastCacheFormated=gmdate("d/m/Y h:i:s a", $lastCache);
+        }
+        if(!$valu){$lastCacheTxt='';}else{$lastCacheTxt='(Last Cache: '.$lastCacheFormated.') <a href="javscript:;" class="clearcache">Clear Cache</a>';}
+
+//        echo (microtime(true)-$lastCache);
+        if((microtime(true)-$lastCache)<100){
+            global $wpdb;
+            $table_name = 'nonfig_' . $wpdb->prefix . "cache";
+            $wpdb->query("TRUNCATE TABLE $table_name");
+        }
+
         // Render the output
-        echo '<label> <input type="checkbox" id="fieldCacheActive" name="nonfig_api_key_option[cache_active]" value="1"' . checked( 1, $valu, false ) . '/> <span>Active '.$lastCacheTxt.'</span><input type="hidden" id="fieldLastCache" name="nonfig_api_key_option[last_cache]" value="'.$curentTime.'"/> </label>';
+        echo '<label> <input type="checkbox" id="fieldCacheActive" name="nonfig_api_key_option[cache_active]" value="1"' . checked( 1, $valu, false ) . '/> <span>Active '.$lastCacheTxt.'</span> <input type="hidden" id="fieldLastCache" name="nonfig_api_key_option[last_cache]" value="'.$lastCache.'"/><input type="hidden" id="fieldNextCache" name="nonfig_api_key_option[next_cache]" value="'.$nextCache.'"/> </label>';
+        if($valu){
         ?>
+            <style>
+                #wpbody-content.loading form{position:relative;}
+                #wpbody-content.loading form:before{content:''; position:absolute; left:0; right:0; top:0; bottom: 0; background:#f1f1f1b8; z-index: 100;}
+            </style>
         <script>
             jQuery(function($){
-                /*var fieldLastCache = $('#fieldLastCache');
-                $('#fieldLastCache').remove();
-                // $('#fieldCacheActive').parent().append(fieldLastCache);
-                $('#fieldCacheActive').on('change',function(){
-                    if($('#fieldCacheActive').is(':checked')){
-                        $('#fieldLastCache').remove();
-                    } else {
-                        $('#fieldCacheActive').parent().append(fieldLastCache);
-                        $('#fieldLastCache').val(0);
-                    }
-                });*/
-                $('#fieldCacheActive').on('change',function(){
-                    $(this).addClass('changed');
+                var curTime = <?php echo $curentTime; ?>,
+                    cacheDur = <?php echo $options['cache_duration']; ?>;
+                $('.clearcache').on('click',function(){
+                    curTime=Date.now()/1000;
+                    $('#wpbody-content').addClass('loading');
+                    $('#fieldLastCache').val(curTime);
+                    $('#fieldNextCache').val(curTime+(cacheDur/1000));
+                    setTimeout(function(){$('.submit input').trigger('click');},2000);
                 });
-                /*$('#wpbody-content form').submit(function(event){
-                    var fieldLastCache = $('#fieldLastCache').val();
-                    if(!$('#fieldCacheActive').hasClass('changed')){
-                        $('#fieldLastCache').remove();
-                    } else {
-                        $('#fieldCacheActive').parent().append(fieldLastCache);
-                        $('#fieldLastCache').val(0);
-                    }
-
-                });*/
             });
         </script>
         <?php
+        }
 
     }
     public function cache_duration_callback()

@@ -27,6 +27,12 @@ settings_errors();
     </h2>
     <form method="post" action="options.php">
         <?php
+
+        $allopt = get_option('nonfig_api_key_option');
+        var_dump($allopt);
+//        echo $allopt['next_cache'];
+        echo ($allopt['next_cache']<microtime(true)).'<br>next:'.$allopt['next_cache'].'<br>current:'.microtime(true).'<br>dif:'.($allopt['next_cache']-microtime(true));
+
         // decision block
         $settings_field = 'nonfig_api_key_option';
         $settings_section = 'nonfig_api_key_option';
