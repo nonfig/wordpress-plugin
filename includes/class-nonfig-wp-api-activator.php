@@ -38,9 +38,10 @@ class Nonfig_Wp_Api_Activator {
         $charset_collate = $wpdb->get_charset_collate();
         $sql = "CREATE TABLE $table_name (
               id mediumint(9) NOT NULL AUTO_INCREMENT,
-              time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-              nonfig_value varchar(128) NOT NULL default '',
-              nonfig_result text NOT NULL default '',
+              config_id varchar(64) NOT NULL default '',
+              config_name varchar(128) NOT NULL default '',
+              config_path text NOT NULL default '',
+              createdAt datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
               PRIMARY KEY  (id)
             ) $charset_collate;";
 

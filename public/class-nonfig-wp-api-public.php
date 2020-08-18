@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -21,6 +22,7 @@
  * @author     Azim Khan <akhan_24@hotmail.com>
  */
 class Nonfig_Wp_Api_Public {
+
 
 	/**
 	 * The ID of this plugin.
@@ -128,6 +130,10 @@ class Nonfig_Wp_Api_Public {
             $hasToUpdate = ($nonfig_api_keys['next_cache']<microtime(true));
             $data_present_in_db = false;
 
+            // Update Date
+//            if($isCacheActive && $hasToUpdate){$this->update_next_cache();}
+            $hasToUpdate=true;
+
 //            return $nonfig_api_keys['next_cache'].'-'.microtime(true);
 
             global $wpdb;
@@ -135,12 +141,14 @@ class Nonfig_Wp_Api_Public {
 
             if(!empty($atts['id'])){
                 try {
-                    $configPath = $nonfig->findConfigurationById($atts['id']);
-                    $stringoutput=$configPath[0]->data;
-                    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
-                        $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
+                    if($isCacheActive && !$hasToUpdate){
+                        $stringoutput = $this->cache_table_get($atts,'get','');
+                        if(!empty($stringoutput)){return $stringoutput;}
                     }
-                    return $stringoutput;
+                    $configPath = $nonfig->findConfigurationById($atts['id']);
+                    $stringoutput = $this->cache_table_get($atts,'add',$configPath);
+                    if(!empty($stringoutput)){return $stringoutput;}
+                    else{return $content;}
                 }
                 catch(Exception $e) {
                     //return 'Message: ' .$e->getMessage();
@@ -150,92 +158,37 @@ class Nonfig_Wp_Api_Public {
             else if(!empty($atts['full-name'])){
                 try {
                     if($isCacheActive && !$hasToUpdate){
-                        $data_to_retrieve = 'full-name:'.$atts['full-name'];
-                        $data_to_retrieve = explode('/',$data_to_retrieve);
-                        $data_to_retrieve = join('-', $data_to_retrieve);
-                        if(!empty($atts['keypath'])){$data_to_retrieve = $data_to_retrieve.',keypath:'.$atts['keypath'];}
-//                        $retrieve_data = $wpdb->get_results("SELECT * FROM $table_name WHERE nonfig_value = $data_to_retrieve");
-                        $retrieve_data = $wpdb->get_results("SELECT * FROM $table_name");$retval='';
-                        foreach ($retrieve_data as $itm){
-                            if($itm->nonfig_value==$data_to_retrieve){
-                                $retval=$itm;
-                            }
-                        }
-//                        return json_encode($retrieve_data);
-//                        return $retval;
-                        if(!empty($retval)){
-                            $stringoutput = $retval->nonfig_result;
-                            return $stringoutput.' - From table';
-                        }
+                        $stringoutput = $this->cache_table_get($atts,'get','');
+                        if(!empty($stringoutput)){return $stringoutput;}
                     }
-                    $table_data='';
                     $configPath = $nonfig->findConfigurationByName($atts['full-name']);
 //                    return json_encode($configPath);
-                    $stringoutput=$configPath->data;
-
-                    $table_data_label='full-name:'.$atts['full-name'];
-                    $table_data_label = explode('/',$table_data_label);
-                    $table_data_label = join('-', $table_data_label);
-
-                    $table_data_data = $stringoutput;
-                    if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
-                        $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
-                        $table_data_label=$table_data_label.'keypath:'.$atts['keypath'];
-                        $table_data_data = $stringoutput;
-                    }
-
-                    $retrieve_data = $wpdb->get_results("SELECT * FROM $table_name");$retval='';
-                    foreach ($retrieve_data as $itm){
-                        if($itm->nonfig_value==$table_data_label){
-                            $retval=$itm;
-                        }
-                    }
-                    if(empty($retval)){
-                        $wpdb->insert(
-                            $table_name,
-                            array(
-                                'time' => current_time( 'mysql' ),
-                                'nonfig_value' => $table_data_label,
-                                'nonfig_result' => $table_data_data,
-                            )
-                        );
-                    }
-                    else{
-                        $wpdb->update(
-                            $table_name,
-                            array(
-                                'time' => current_time( 'mysql' ),
-                                'nonfig_result' => $table_data_data,
-                            ),
-                            array(
-                                'id' => $retval->id
-                            )
-                        );
-                    }
-                    $this->update_next_cache();
-
-                    return $stringoutput;
+                    $stringoutput = $this->cache_table_get($atts,'add',$configPath);
+                    if(!empty($stringoutput)){return $stringoutput;}
+                    else{return $content.' - last';}
                 }
                 catch(Exception $e) {
                     //return 'Message: ' .$e->getMessage();
-                    return $content;
+                    return $content.' - e';
                 }
             }
             else if(!empty($atts['param-type'])){
                 if($atts['param-type']=='query' && !empty($atts['field'])){
                     try {
-                        $paramval = $_GET[$atts['field']];
-                        $configPath = $nonfig->findConfigurationByLabels($paramval);
-                        $stringoutput=$configPath[0]->data;
-                        if(!empty($atts['keypath']) && $configPath[0]->type=='JSON'){
-                            $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
-                        }
 
-                        return $stringoutput;
+                        if($isCacheActive && !$hasToUpdate){
+                            $stringoutput = $this->cache_table_get($atts,'get','');
+                            if(!empty($stringoutput)){return $stringoutput;}
+                        }
+                        $paramval = $_GET[$atts['field']];
+                        $configPath = $nonfig->findConfigurationByLabels($paramval)[0];
+                        $stringoutput = $this->cache_table_get($atts,'add',$configPath);
+                        if(!empty($stringoutput)){return $stringoutput;}
+                        else{return $content.' - last';}
                     }
                     catch(Exception $e) {
 //                    return 'Message: ' .$e->getMessage();
-                        return $content;
+                        return $content.' - e';
                     }
                 } else {
                     return $content;
@@ -256,12 +209,15 @@ class Nonfig_Wp_Api_Public {
 //        require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
 
 
+
             $jsonoutput=json_decode($data);
             /*if(strpos($keypath, '.')>=0){
-                $stringoutput = _::get($jsonoutput, $atts['keypath'], "default");
+                $stringoutput = get($jsonoutput, $keypath, "default");
             }
-            else{ }*/
-            $stringoutput = $jsonoutput->{$keypath};
+            else{
+
+            }*/
+        $stringoutput = $jsonoutput->{$keypath};
 
             /*foreach($jsonoutput as $keyp=>$item){
                 if(strpos($atts['keypath'], '.')>=0){
@@ -284,6 +240,68 @@ class Nonfig_Wp_Api_Public {
         $nonfig_api_key_option['last_cache']=$lastCache;
         $nonfig_api_key_option['next_cache']=$nextCache;
         update_option('nonfig_api_key_option', $nonfig_api_key_option);
+    }
+    public function cache_table_get($atts,$method,$configData){
+        $table_data_label='';
+        if(!empty($atts['id'])){$table_data_label = 'id:'.$atts['id'];}
+        if(!empty($atts['full-name'])){$table_data_label = 'full-name:'.$atts['full-name'];}
+        if($atts['param-type']=='query' && !empty($atts['field'])){
+            $table_data_label = 'query:'.$_GET[$atts['field']];
+        }
+        if(!empty($atts['keypath'])){$table_data_label = $table_data_label.',keypath:'.$atts['keypath'];}
+
+        $table_data_label = explode('/',$table_data_label);
+        $table_data_label = join('-', $table_data_label);
+
+        global $wpdb;
+        $table_name = 'nonfig_' . $wpdb->prefix . "cache";
+        $retrieve_data = $wpdb->get_results("SELECT * FROM $table_name");$retval='';
+        foreach ($retrieve_data as $itm){
+            if($itm->config_name==$table_data_label){$retval=$itm;}
+        }
+        if($method=='get'){
+            if(!empty($retval)){
+                $stringoutput = $retval->config_path;
+                return $stringoutput.' - From table';
+            }
+        }
+        if($method=='add'){
+
+
+            $config_id = $configData->id;
+            $stringoutput = $configData->data;
+            if(!empty($atts['keypath']) && $configData->type=='JSON'){
+                $stringoutput=$this->keypath_filter($stringoutput,$atts['keypath']);
+            }
+            $table_data_data = $stringoutput;
+
+            if(empty($retval)){
+                $wpdb->insert(
+                    $table_name,
+                    array(
+                        'createdAt' => current_time( 'mysql' ),
+                        'config_name' => $table_data_label,
+                        'config_path' => $table_data_data,
+                        'config_id' => $config_id,
+                    )
+                );
+            }
+            else{
+                $wpdb->update(
+                    $table_name,
+                    array(
+                        'createdAt' => current_time( 'mysql' ),
+                        'config_path' => $table_data_data,
+                    ),
+                    array(
+                        'id' => $retval->id
+                    )
+                );
+            }
+
+            return $table_data_data;
+        }
+
     }
 
 

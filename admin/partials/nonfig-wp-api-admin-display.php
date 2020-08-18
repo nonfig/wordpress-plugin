@@ -27,11 +27,11 @@ settings_errors();
     </h2>
     <form method="post" action="options.php">
         <?php
-
+/*
         $allopt = get_option('nonfig_api_key_option');
         var_dump($allopt);
 //        echo $allopt['next_cache'];
-        echo ($allopt['next_cache']<microtime(true)).'<br>next:'.$allopt['next_cache'].'<br>current:'.microtime(true).'<br>dif:'.($allopt['next_cache']-microtime(true));
+        echo ($allopt['next_cache']<microtime(true)).'<br>next:'.$allopt['next_cache'].'<br>current:'.microtime(true).'<br>dif:'.($allopt['next_cache']-microtime(true));*/
 
         // decision block
         $settings_field = 'nonfig_api_key_option';
@@ -60,18 +60,9 @@ settings_errors();
     <div>
         <style>
             .generator {}
-
-            .generator input {
-                width: 50%;
-            }
-
-            .generator table {
-                min-width: 50%;
-            }
-
-            .generator table input {
-                width: 100%;
-            }
+            .generator input {width: 50%;}
+            .generator table {min-width: 50%;}
+            .generator table input {width: 100%;}
         </style>
 
         <div>
@@ -85,7 +76,7 @@ settings_errors();
                                 I am convenient because I require little markup to use effectively.</p>
                         </div>
                         <div class="card-action">
-                            <a class="waves-effect waves-light btn-small red">Generate Code</a>
+                            <a class="waves-effect waves-light btn-small red modal-trigger" href="#modal-using-query">Generate Code</a>
                         </div>
                     </div>
                 </div>
@@ -97,7 +88,7 @@ settings_errors();
                                 I am convenient because I require little markup to use effectively.</p>
                         </div>
                         <div class="card-action">
-                            <a class="waves-effect waves-light btn-small red">Generate Code</a>
+                            <a class="waves-effect waves-light btn-small red modal-trigger" href="#modal-using-full-name">Generate Code</a>
                         </div>
                     </div>
                 </div>
@@ -109,7 +100,7 @@ settings_errors();
                                 I am convenient because I require little markup to use effectively.</p>
                         </div>
                         <div class="card-action">
-                            <a class="waves-effect waves-light btn-small red">Generate Code</a>
+                            <a class="waves-effect waves-light btn-small red modal-trigger" href="#modal-using-id">Generate Code</a>
                         </div>
                     </div>
                 </div>
@@ -121,7 +112,7 @@ settings_errors();
                                 I am convenient because I require little markup to use effectively.</p>
                         </div>
                         <div class="card-action">
-                            <a class="waves-effect waves-light btn-small red modal-trigger" href="#modal-using-labels">Generate Code</a>
+                            <a class="waves-effect waves-light btn-small red modal-trigger" href="#modal-using-labels" disabled="">Coming Soon</a>
                         </div>
                     </div>
                 </div>
@@ -207,17 +198,125 @@ settings_errors();
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Copy Code</a>
             </div>
         </div>
+        <div id="modal-using-query" class="modal">
+            <div class="modal-content">
+                <h4>Generate for Query Parmeters</h4>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select>
+                            <option value="query" selected>Query Parameter</option>
+                            <option value="url" disabled>URL Parameter</option>
+                        </select>
+                        <label>Select Parameter Type</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">add_circle</i>
+                        <input placeholder="Parameter Field Name" type="text" class="nonfig-query-field">
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">build</i>
+                        <input placeholder="Do you want to point a path inside the file i.g .path.to.value" type="text" class="nonfig-keypath">
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">mode_edit</i>
+
+                        <textarea class="materialize-textarea nonfig-label-unresolve" placeholder="Show this if cannot resolve a configuration"></textarea>
+                        <label for="textarea2">Default fallback value</label>
+                    </div>
+                </div>
+                <div>
+<!--                    <a class="waves-effect waves-light btn-large generate-code">Generate</a>-->
+                    <div class="code-output code-output-show" style="display:none;">
+                        <input type="text" id="query-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="waves-effect waves-green btn-flat code-output-show" style="display:none;" onclick="copy_to_clipboard('query-output');">Copy Code</a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+        <div id="modal-using-full-name" class="modal">
+            <div class="modal-content">
+                <h4>Generate for Query Parmeters</h4>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">add_circle</i>
+                        <input placeholder="Fully Qualified Name" type="text" class="nonfig-full-name">
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">build</i>
+                        <input placeholder="Do you want to point a path inside the file i.g .path.to.value" type="text" class="nonfig-keypath">
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">mode_edit</i>
+
+                        <textarea class="materialize-textarea nonfig-label-unresolve" placeholder="Show this if cannot resolve a configuration"></textarea>
+                        <label for="textarea2">Default fallback value</label>
+                    </div>
+                </div>
+                <div>
+                    <!--                    <a class="waves-effect waves-light btn-large generate-code">Generate</a>-->
+                    <div class="code-output code-output-show" style="display:none;">
+                        <input type="text" id="full-name-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="waves-effect waves-green btn-flat code-output-show" style="display:none;" onclick="copy_to_clipboard('full-name-output');">Copy Code</a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+        <div id="modal-using-id" class="modal">
+            <div class="modal-content">
+                <h4>Generate for Query Parmeters</h4>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">add_circle</i>
+                        <input placeholder="Enter specific ID for configration" type="text" class="nonfig-id">
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">build</i>
+                        <input placeholder="Do you want to point a path inside the file i.g .path.to.value" type="text" class="nonfig-keypath">
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">mode_edit</i>
+
+                        <textarea class="materialize-textarea nonfig-label-unresolve" placeholder="Show this if cannot resolve a configuration"></textarea>
+                        <label for="textarea2">Default fallback value</label>
+                    </div>
+                </div>
+                <div>
+                    <!--                    <a class="waves-effect waves-light btn-large generate-code">Generate</a>-->
+                    <div class="code-output code-output-show" style="display:none;">
+                        <input type="text" id="id-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="waves-effect waves-green btn-flat code-output-show" style="display:none;" onclick="copy_to_clipboard('id-output');">Copy Code</a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
 
         <script>
             jQuery(function($) {
                 // register modal plugin
-                $('.modal').modal();
+                $('.modal').modal({
+                    onCloseStart:function(){
+                        $('#modal-using-query .input-field input, #modal-using-query .input-field textarea').val('');
+                        $('#modal-using-full-name .input-field input, #modal-using-full-name .input-field textarea').val('');
+                        $('.code-output-show').hide();
+                    }
+                });
 
                 // register chips plugin
                 $('.chips-placeholder').chips({
                     placeholder: 'Enter label name',
                     secondaryPlaceholder: '+Label',
                 });
+
+                $('select').formSelect();
 
                 $('body').on('blur', '.nonfig-id, .nonfig-id-unresolve', function() {
                     var fildval = $('.nonfig-id').val(),
@@ -240,19 +339,42 @@ settings_errors();
                     }
                 });
 
+                $('body').on('click', '#modal-using-query .generate-code', function() {
 
-                $('body').on('blur', '.nonfig-label, .nonfig-keypath, .nonfig-label-unresolve', function() {
-                    var fildval = $('.nonfig-label').val(),
-                        keypth = $('.nonfig-keypath').val(),
-                        unresl = $('.nonfig-label-unresolve').val();
-                    if (fildval != '') {
-                        $('.nonfig-label-output').text('[nonfig labels="' + fildval + '"] ' + unresl + ' [/nonfig]');
+                });
+
+                $('body').on('blur', '#modal-using-query .input-field input, #modal-using-query .input-field textarea', function() {
+                    var paramField = $('#modal-using-query .nonfig-query-field').val(),
+                        keypth = $('#modal-using-query .nonfig-keypath').val(),
+                        unresl = $('#modal-using-query .nonfig-label-unresolve').val();
+
+                        $('#modal-using-query .nonfig-label-output').val('[nonfig param-type="query" field="' + paramField + '"] ' + unresl + ' [/nonfig]');
                         if (keypth != '') {
-                            $('.nonfig-label-output').text('[nonfig labels="' + fildval + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
+                            $('#modal-using-query .nonfig-label-output').val('[nonfig param-type="query" field="' + paramField + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
                         }
-                    } else {
-                        $('.nonfig-label-output').text('[nonfig labels="enter-fulll-name-here"] ' + unresl + ' [/nonfig]');
+                        if(paramField !== '' && unresl !== ''){$('#modal-using-query .code-output-show').show();}
+                });
+                $('body').on('blur', '#modal-using-full-name .input-field input, #modal-using-full-name .input-field textarea', function() {
+                    var paramField = $('#modal-using-full-name .nonfig-full-name').val(),
+                        keypth = $('#modal-using-full-name .nonfig-keypath').val(),
+                        unresl = $('#modal-using-full-name .nonfig-label-unresolve').val();
+
+                    $('#modal-using-full-name .nonfig-label-output').val('[nonfig full-name="' + paramField + '"] ' + unresl + ' [/nonfig]');
+                    if (keypth != '') {
+                        $('#modal-using-full-name .nonfig-label-output').val('[nonfig full-name="' + paramField + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
                     }
+                    if(paramField !== '' && unresl !== ''){$('#modal-using-full-name .code-output-show').show();}
+                });
+                $('body').on('blur', '#modal-using-id .input-field input, #modal-using-id .input-field textarea', function() {
+                    var paramField = $('#modal-using-id .nonfig-id').val(),
+                        keypth = $('#modal-using-id .nonfig-keypath').val(),
+                        unresl = $('#modal-using-id .nonfig-label-unresolve').val();
+
+                    $('#modal-using-id .nonfig-label-output').val('[nonfig id="' + paramField + '"] ' + unresl + ' [/nonfig]');
+                    if (keypth != '') {
+                        $('#modal-using-id .nonfig-label-output').val('[nonfig id="' + paramField + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
+                    }
+                    if(paramField !== '' && unresl !== ''){$('#modal-using-id .code-output-show').show();}
                 });
 
                 // handler: using labels
@@ -288,7 +410,17 @@ settings_errors();
                 function setOutputCode(result) {
                     $('.code-output p').text(result);
                 }
+
             });
+            function copy_to_clipboard(id) {
+                var copyText = document.getElementById(id);
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                // alert("Copied the text: " + copyText.value);
+                console.log('copied');
+                M.toast({html: 'Code copied to clipboard!'})
+            }
         </script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.19/lodash.min.js" integrity="sha512-/A6lxqQJVUIMnx8B/bx/ERfeuJnqoWPJdUxN8aBj+tZYL35O998ry7UUGoN65PSUNlJNrqKZrDENi4i1c3zy4Q==" crossorigin="anonymous"></script>
