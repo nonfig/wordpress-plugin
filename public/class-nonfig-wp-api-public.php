@@ -110,6 +110,7 @@ class Nonfig_Wp_Api_Public {
 
     public function nonfig_shortcode_function( $atts = array(), $content = null ) {
 
+	    $pluginCall=true;
         require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/nonfig/php-sdk/index.php';
 
 
