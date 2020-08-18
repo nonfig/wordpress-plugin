@@ -21,7 +21,7 @@
  * Author URI:        https://www.nonfig.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       nonfig-wp-api
+ * Text Domain:       nonfig
  * Domain Path:       /languages
  */
 
