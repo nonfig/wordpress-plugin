@@ -38,5 +38,7 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
-
-      - run: ./vendor/bin/phpcs ./ --standard=PSR2
+      - run: composer global require "wp-coding-standards/wpcs"
+      - run: ./vendor/bin/phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+      - run: ./vendor/bin/phpcs --config-set default_standard WordPress-Extra
+      - run: ./vendor/bin/phpcbf ./admin --extensions=php --standard=Wordpress-Extra
