@@ -18,7 +18,6 @@
  * @since      1.0.0
  * @package    Nonfig_Wp_Api
  * @subpackage Nonfig_Wp_Api/includes
- * @author     Azim Khan <akhan_24@hotmail.com>
  */
 class Nonfig_Wp_Api_Activator {
 

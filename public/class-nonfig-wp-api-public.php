@@ -19,7 +19,6 @@
  *
  * @package    Nonfig_Wp_Api
  * @subpackage Nonfig_Wp_Api/public
- * @author     Azim Khan <akhan_24@hotmail.com>
  */
 class Nonfig_Wp_Api_Public {
 
