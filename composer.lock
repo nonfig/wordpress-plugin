@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e57ceb6c4923f974b59e8a4cabcc366",
+    "content-hash": "044f62f87c68f99dce7eca10f8ee55d5",
     "packages": [
         {
             "name": "nategood/httpful",
@@ -82,7 +82,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "description": "PHP SDK for Nonfig RESTful APIs",
             "time": "2020-08-06T22:36:03+00:00"
-        },
+        }
+    ],
+    "packages-dev": [
         {
             "name": "squizlabs/php_codesniffer",
             "version": "dev-master",
@@ -133,9 +135,7 @@
                 "standards"
             ],
             "time": "2020-08-10T04:50:15+00:00"
-        }
-    ],
-    "packages-dev": [
+        },
         {
             "name": "wp-coding-standards/wpcs",
             "version": "dev-master",

@@ -13,10 +13,10 @@
  * @package           Nonfig_Wp_Api
  *
  * @wordpress-plugin
- * Plugin Name:       Nonfig - WordPress
+ * Plugin Name:       Nonfig
  * Plugin URI:        https://docs.nonfig.com/sdk/wordpress-plugin
  * Description:       Nonfig has built-in support for WordPress. Manage your Configurations and Content at a single hub and manage changes faster and better.
- * Version:           1.0.0
+ * Version:           0.0.1
  * Author:            Nonfig
  * Author URI:        https://www.nonfig.com
  * License:           GPL-2.0+
