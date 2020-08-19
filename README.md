@@ -25,7 +25,7 @@ We are using PHP Code Sniffer (phpcs) to lint the code and `phpcbf` to automatic
 composer global require "wp-coding-standards/wpcs"
 ./vendor/bin/phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
 ./vendor/bin/phpcs --config-set default_standard WordPress-Extra
-./vendor/bin/phpcbf ./admin --extensions=php
+ ./vendor/bin/phpcbf ./admin --extensions=php --standard=Wordpress-Extra
 ```
 
 the example above only validates `/admin` folder. Essentially, we will validate everything.
