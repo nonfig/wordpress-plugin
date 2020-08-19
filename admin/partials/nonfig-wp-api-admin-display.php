@@ -1,28 +1,33 @@
 <?php
 
+// phpcs:ignore
 $nonfig_api_keys = get_option( 'nonfig_api_key_option' );
 $active_tab      = ( sanitize_text_field( isset( $_GET['tab'] ) ) )
 	? sanitize_text_field( $_GET['tab'] )
 	: 'api_key_option';
-$keysPresent     = false;
+$keys_present    = false;
 
 if (
 	! empty( $nonfig_api_keys['app_id'] ) &&
 	! empty( $nonfig_api_keys['app_secret'] )
 ) {
-	$keysPresent = true;
+	$keys_present = true;
 }
 
 settings_errors();
 ?>
 <div class="wrap">
-	<h2><?php _e( 'Nonfig API Options', 'nonfig_wp_api' ); ?></h2>
+	<h2><?php esc_html_e( 'Nonfig API Options', 'nonfig_wp_api' ); ?></h2>
 	<h2 class="nav-tab-wrapper">
-		<a href="?page=nonfig_wp_api_options&tab=api_key_option" class="nav-tab <?php echo $active_tab == 'api_key_option' ? 'nav-tab-active' : ''; ?>">
-			<?php _e( 'Settings', 'nonfig_wp_api' ); ?>
+		<a href="?page=nonfig_wp_api_options&tab=api_key_option" class="nav-tab <?php echo 'api_key_option' === $active_tab ? 'nav-tab-active' : ''; ?>">
+			<?php esc_html_e( 'Settings', 'nonfig_wp_api' ); ?>
 		</a>
-		<?php if ( $keysPresent ) { ?>
-			<a href="?page=nonfig_wp_api_options&tab=content_options" class="nav-tab <?php echo $active_tab == 'content_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Shortcode Generator', 'nonfig_wp_api' ); ?></a>
+		<?php if ( $keys_present ) { ?>
+			<a
+				href="?page=nonfig_wp_api_options&tab=content_options"
+				class="nav-tab <?php echo 'content_options' === $active_tab ? 'nav-tab-active' : ''; ?>"
+			>
+				<?php esc_html_e( 'Shortcode Generator', 'nonfig_wp_api' ); ?></a>
 		<?php } ?>
 	</h2>
 	<form method="post" action="options.php">
@@ -32,7 +37,7 @@ settings_errors();
 		$settings_section = 'nonfig_api_key_option';
 		$show_submit_btn  = true;
 
-		if ( $active_tab == 'content_options' && $keysPresent ) {
+		if ( 'content_options' === $active_tab && $keys_present ) {
 			$settings_field   = 'nonfig_content_options';
 			$settings_section = 'nonfig_content_options';
 			$show_submit_btn  = false;
@@ -50,7 +55,7 @@ settings_errors();
 </div><!-- /.wrap -->
 
 <!-- Shortcode Generator section -->
-<?php if ( $active_tab == 'content_options' && $keysPresent ) { ?>
+<?php if ( 'content_options' === $active_tab && $keys_present ) { ?>
 	<div>
 		<style>
 			.generator {}
@@ -436,7 +441,6 @@ settings_errors();
 				})
 			}
 		</script>
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</div>
 	<?php
 }

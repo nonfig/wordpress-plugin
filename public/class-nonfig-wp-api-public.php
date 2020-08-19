@@ -1,5 +1,7 @@
 <?php
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'nonfig-php-sdk/index.php';
+
 
 /**
  * The public-facing functionality of the plugin.
@@ -100,10 +102,6 @@ class Nonfig_Wp_Api_Public {
 	}
 
 	public function nonfig_shortcode_function( $atts = array(), $defaultContent = null ) {
-
-		$pluginCall = true;
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/nonfig/php-sdk/index.php';
-
 		// set up default parameters
 		extract(
 			shortcode_atts(

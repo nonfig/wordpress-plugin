@@ -71,18 +71,13 @@ class Nonfig_Wp_Api_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Nonfig_Wp_Api_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Nonfig_Wp_Api_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
+		// phpcs:ignore
+		wp_enqueue_style(
+			'google-fonts',
+			'https://fonts.googleapis.com/icon?family=Material+Icons',
+			array()
+		);
+		wp_enqueue_style( 'materialize', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/nonfig-wp-api-admin.css', array(), $this->version, 'all' );
 	}
 
@@ -92,17 +87,6 @@ class Nonfig_Wp_Api_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Nonfig_Wp_Api_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Nonfig_Wp_Api_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 		wp_enqueue_script( 'lodash', plugin_dir_url( __FILE__ ) . 'js/lodash.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'materialize', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/nonfig-wp-api-admin.js', array( 'jquery' ), $this->version, false );
@@ -153,7 +137,7 @@ class Nonfig_Wp_Api_Admin {
 	 */
 	public function initialize_api_key_option() {
 		// If the theme options don't exist, create them.
-		if ( false == get_option( 'nonfig_api_key_option' ) ) {
+		if ( false === get_option( 'nonfig_api_key_option' ) ) {
 			$default_array = $this->default_api_key_option();
 			add_option( 'nonfig_api_key_option', $default_array );
 		}
@@ -215,61 +199,73 @@ class Nonfig_Wp_Api_Admin {
 			'nonfig_api_key_option'
 		);
 	}
+
 	public function app_id_callback() {
-		 // First, we read the social options collection
 		$options = get_option( 'nonfig_api_key_option' );
-		// Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
-		$valu = '';
+		$app_id  = '';
+
 		if ( isset( $options['app_id'] ) ) {
-			$valu = $options['app_id'];
-		} // end if
-		// Render the output
-		echo '<input style="width: 60%;" type="text" id="fieldAppId" name="nonfig_api_key_option[app_id]" value="' . $valu . '" />';
+			$app_id = $options['app_id'];
+		}
+		?>
+
+		<input
+			style="width: 60%;"
+			type="text"
+			id="fieldAppId"
+			name="nonfig_api_key_option[app_id]"
+			value="<?php echo esc_html( $app_id ); ?>" />
+		<?php
 	}
+
 	public function app_secret_callback() {
-		 // First, we read the social options collection
-		$options = get_option( 'nonfig_api_key_option' );
-		// Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
-		$valu = '';
+		$options    = get_option( 'nonfig_api_key_option' );
+		$app_secret = '';
+
 		if ( isset( $options['app_secret'] ) ) {
-			$valu = $options['app_secret'];
-		} // end if
-		// Render the output
-		echo '<input type="text" style="width: 60%;" id="fieldAppSecret" name="nonfig_api_key_option[app_secret]" value="' . $valu . '" />';
+			$app_secret = $options['app_secret'];
+		}
+		?>
+
+		<input
+			type="text"
+			style="width: 60%;"
+			id="fieldAppSecret"
+			name="nonfig_api_key_option[app_secret]"
+			value="<?php echo esc_html( $app_secret ); ?>"
+			/>
+		<?php
 	}
 
 	public function cache_active_callback() {
-		// First, we read the social options collection
-		$options = get_option( 'nonfig_api_key_option' );
-		// Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
-		$valu              = '';
-		$lastCacheFormated = '';
-		$nextCache         = 0;
-		$curentTime        = microtime( true );
+		$options     = get_option( 'nonfig_api_key_option' );
+		$valu        = '';
+		$curent_time = microtime( true );
 		if ( isset( $options['cache_active'] ) ) {
 			$valu = $options['cache_active'];
 		}
-		if ( isset( $options['last_cache'] ) ) {
-			$lastCache = $options['last_cache'];
-		} // end if
-		if ( ! empty( $lastCache ) ) {
-			$nextCache         = $lastCache + $options['cache_duration'];
-			$lastCacheFormated = gmdate( 'd/m/Y h:i:s a', $lastCache );
-		}
-		if ( ! $valu ) {
-			$lastCacheTxt = '';
-		} else {
-			$lastCacheTxt = '(Last Cache: ' . $lastCacheFormated . ') <a href="javscript:;" class="clearcache">Clear Cache</a>';
-		}
 
-		if ( ( microtime( true ) - $lastCache ) < 100 ) {
+		if ( isset( $options['last_cache'] ) ) {
+			$last_cache = $options['last_cache'];
+		} // end if
+
+		if ( ( microtime( true ) - $last_cache ) < 100 ) {
 			global $wpdb;
 			$table_name = 'nonfig_' . $wpdb->prefix . 'cache';
-			$wpdb->query( "TRUNCATE TABLE $table_name" );
+			$wpdb->query( $wpdb->prepare( 'TRUNCATE TABLE %s', array( $table_name ) ) );
 		}
 
 		// Render the output
-		echo '<label> <input type="checkbox" id="fieldCacheActive" name="nonfig_api_key_option[cache_active]" value="1"' . checked( 1, $valu, false ) . '/> <span>Active ' . $lastCacheTxt . '</span> <input type="hidden" id="fieldLastCache" name="nonfig_api_key_option[last_cache]" value="' . $lastCache . '"/><input type="hidden" id="fieldNextCache" name="nonfig_api_key_option[next_cache]" value="' . $nextCache . '"/> </label>';
+		?>
+		<label>
+			<input
+				type="checkbox"
+				id="fieldCacheActive"
+				checked="<?php esc_html( $options['cache_active'] ); ?>"
+				name="nonfig_api_key_option[cache_active]"
+				value="1" />
+		<span>Active</span>
+		<?php
 		if ( $valu ) {
 			?>
 			<style>
@@ -290,8 +286,8 @@ class Nonfig_Wp_Api_Admin {
 			</style>
 			<script>
 				jQuery(function($) {
-					var curTime = <?php echo $curentTime; ?>,
-						cacheDur = <?php echo $options['cache_duration']; ?>;
+					var curTime = <?php echo esc_html( $curent_time ); ?>,
+						cacheDur = <?php echo esc_html( $options['cache_duration'] ); ?>;
 					$('.clearcache').on('click', function() {
 						curTime = Date.now() / 1000;
 						$('#wpbody-content').addClass('loading');
@@ -307,10 +303,9 @@ class Nonfig_Wp_Api_Admin {
 		}
 	}
 	public function cache_duration_callback() {
-		 // First, we read the social options collection
 		$options = get_option( 'nonfig_api_key_option' );
-		// Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
-		$valu = '';
+		$valu    = '';
+
 		if ( isset( $options['cache_duration'] ) ) {
 			$valu = $options['cache_duration'];
 		} // end if
@@ -323,9 +318,9 @@ class Nonfig_Wp_Api_Admin {
 			min="30" max="300"
 			id="fieldCacheDuration"
 			name="nonfig_api_key_option[cache_duration]"
-			value="<?php echo $valu; ?>"
+			value="<?php echo esc_html( $valu ); ?>"
 		/>
-		<strong><span id="fieldCacheDurationOutput"></span></strong>
+		<strong><span id="fieldCacheDurationOutput"><?php echo esc_html( $valu ); ?></span></strong>
 		<script>
 			jQuery(function($) {
 				var $elemFieldCacheDuration = $('#fieldCacheDuration');
@@ -340,37 +335,8 @@ class Nonfig_Wp_Api_Admin {
 		</script>
 
 		<?php
-		// echo '<input type="range" style="width: 60%" min="30" max="300" id="fieldCacheDuration" name="nonfig_api_key_option[cache_duration]" value="' . $valu . '" />';
 	}
 
-	public function cache_duration_callback_dropdown() {
-		// First, we read the social options collection
-		$options = get_option( 'nonfig_api_key_option' );
-		// Next, we need to make sure the element is defined in the options. If not, we'll set an empty string.
-		$valu = '';
-		if ( isset( $options['cache_duration'] ) ) {
-			$valu = $options['cache_duration'];
-		} // end if
-		// Render the output
-		?>
-		<select name="cache_duration[cache_duration_field]" id="dropdown_option_0">
-			<?php $selected = ( isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1min' ) ? 'selected' : ''; ?>
-			<option value="dur-1min" <?php echo $selected; ?>>1 Minute</option>
-			<?php $selected = ( isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1hr' ) ? 'selected' : ''; ?>
-			<option value="dur-1hr" <?php echo $selected; ?>>1 Hour</option>
-			<?php $selected = ( isset( $valu['cache_duration_field'] ) && $valu['cache_duration_field'] === 'dur-1day' ) ? 'selected' : ''; ?>
-			<option value="dur-1day" <?php echo $selected; ?>>1 Day</option>
-		</select>
-		<?php
-	}
-
-
-	/**
-	 * Initializes the theme's social options by registering the Sections,
-	 * Fields, and Settings.
-	 *
-	 * This function is registered with the 'admin_init' hook.
-	 */
 	public function initialize_content_options() {  }
 
 	/**
@@ -388,7 +354,7 @@ class Nonfig_Wp_Api_Admin {
 		// Loop through each of the options sanitizing the data
 		foreach ( $input as $key => $val ) {
 			if ( isset( $input[ $key ] ) ) {
-				$output[ $key ] = esc_url_raw( strip_tags( stripslashes( $input[ $key ] ) ) );
+				$output[ $key ] = esc_url_raw( wp_strip_all_tags( stripslashes( $input[ $key ] ) ) );
 			} // end if
 		} // end foreach
 		// Return the new collection
@@ -402,7 +368,7 @@ class Nonfig_Wp_Api_Admin {
 			// Check to see if the current option has a value. If so, process it.
 			if ( isset( $input[ $key ] ) ) {
 				// Strip all HTML and PHP tags and properly handle quoted strings
-				$output[ $key ] = strip_tags( stripslashes( $input[ $key ] ) );
+				$output[ $key ] = wp_strip_all_tags( stripslashes( $input[ $key ] ) );
 			} // end if
 		} // end foreach
 		// Return the array processing any additional functions filtered by this action
