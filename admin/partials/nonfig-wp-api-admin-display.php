@@ -54,9 +54,18 @@ settings_errors();
 	<div>
 		<style>
 			.generator {}
-			.generator input {width: 50%;}
-			.generator table {min-width: 50%;}
-			.generator table input {width: 100%;}
+
+			.generator input {
+				width: 50%;
+			}
+
+			.generator table {
+				min-width: 50%;
+			}
+
+			.generator table input {
+				width: 100%;
+			}
 		</style>
 
 		<div>
@@ -67,7 +76,7 @@ settings_errors();
 						<div class="card-content white-text">
 							<span class="card-title">Query Parameter</span>
 							<p>Fetch configuration content from Nonfig using Query parameter. Just
-							input the query parameter name, and the value will be used to fetch Config.
+								input the query parameter name, and the value will be used to fetch Config.
 							</p>
 						</div>
 						<div class="card-action">
@@ -80,7 +89,7 @@ settings_errors();
 						<div class="card-content white-text">
 							<span class="card-title">Using Full Name</span>
 							<p>Fetch configuration content from Nonfig using Full name. Just input
-							the exact full name (along with path) and particular config is fetched.
+								the exact full name (along with path) and particular config is fetched.
 							</p>
 						</div>
 						<div class="card-action">
@@ -93,7 +102,7 @@ settings_errors();
 						<div class="card-content white-text">
 							<span class="card-title">Using Unique ID</span>
 							<p>Fetch configuration content from Nonfig using Configuration ID. This
-							fetches the configuration by ID (NOT RECOMMENDED).
+								fetches the configuration by ID (NOT RECOMMENDED).
 							</p>
 						</div>
 						<div class="card-action">
@@ -106,7 +115,7 @@ settings_errors();
 						<div class="card-content white-text">
 							<span class="card-title">Using Labels</span>
 							<p>Provide the list of labels and we will fetch a configuration list.
-							This enables to fetch segmented configurations at any given time.
+								This enables to fetch segmented configurations at any given time.
 							</p>
 						</div>
 						<div class="card-action">
@@ -223,9 +232,9 @@ settings_errors();
 					</div>
 				</div>
 				<div>
-<!--                    <a class="waves-effect waves-light btn-large generate-code">Generate</a>-->
+					<!--                    <a class="waves-effect waves-light btn-large generate-code">Generate</a>-->
 					<div class="code-output code-output-show" style="display:none;">
-						<input type="text" id="query-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;"/>
+						<input type="text" id="query-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;" />
 					</div>
 				</div>
 			</div>
@@ -256,7 +265,7 @@ settings_errors();
 				<div>
 					<!--                    <a class="waves-effect waves-light btn-large generate-code">Generate</a>-->
 					<div class="code-output code-output-show" style="display:none;">
-						<input type="text" id="full-name-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;"/>
+						<input type="text" id="full-name-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;" />
 					</div>
 				</div>
 			</div>
@@ -287,7 +296,7 @@ settings_errors();
 				<div>
 					<!--                    <a class="waves-effect waves-light btn-large generate-code">Generate</a>-->
 					<div class="code-output code-output-show" style="display:none;">
-						<input type="text" id="id-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;"/>
+						<input type="text" id="id-output" class="nonfig-label-output" readonly style="background-color: #000;color: #fff; padding: 0 10px; height: 36px;border-radius: 5px;" />
 					</div>
 				</div>
 			</div>
@@ -301,7 +310,7 @@ settings_errors();
 			jQuery(function($) {
 				// register modal plugin
 				$('.modal').modal({
-					onCloseStart:function(){
+					onCloseStart: function() {
 						$('#modal-using-query .input-field input, #modal-using-query .input-field textarea').val('');
 						$('#modal-using-full-name .input-field input, #modal-using-full-name .input-field textarea').val('');
 						$('.code-output-show').hide();
@@ -346,11 +355,13 @@ settings_errors();
 						keypth = $('#modal-using-query .nonfig-keypath').val(),
 						unresl = $('#modal-using-query .nonfig-label-unresolve').val();
 
-						$('#modal-using-query .nonfig-label-output').val('[nonfig param-type="query" field="' + paramField + '"] ' + unresl + ' [/nonfig]');
-						if (keypth != '') {
-							$('#modal-using-query .nonfig-label-output').val('[nonfig param-type="query" field="' + paramField + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
-						}
-						if(paramField !== '' && unresl !== ''){$('#modal-using-query .code-output-show').show();}
+					$('#modal-using-query .nonfig-label-output').val('[nonfig param-type="query" field="' + paramField + '"] ' + unresl + ' [/nonfig]');
+					if (keypth != '') {
+						$('#modal-using-query .nonfig-label-output').val('[nonfig param-type="query" field="' + paramField + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
+					}
+					if (paramField !== '' && unresl !== '') {
+						$('#modal-using-query .code-output-show').show();
+					}
 				});
 				$('body').on('blur', '#modal-using-full-name .input-field input, #modal-using-full-name .input-field textarea', function() {
 					var paramField = $('#modal-using-full-name .nonfig-full-name').val(),
@@ -361,7 +372,9 @@ settings_errors();
 					if (keypth != '') {
 						$('#modal-using-full-name .nonfig-label-output').val('[nonfig full-name="' + paramField + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
 					}
-					if(paramField !== '' && unresl !== ''){$('#modal-using-full-name .code-output-show').show();}
+					if (paramField !== '' && unresl !== '') {
+						$('#modal-using-full-name .code-output-show').show();
+					}
 				});
 				$('body').on('blur', '#modal-using-id .input-field input, #modal-using-id .input-field textarea', function() {
 					var paramField = $('#modal-using-id .nonfig-id').val(),
@@ -372,7 +385,9 @@ settings_errors();
 					if (keypth != '') {
 						$('#modal-using-id .nonfig-label-output').val('[nonfig id="' + paramField + '" keypath="' + keypth + '"] ' + unresl + ' [/nonfig]');
 					}
-					if(paramField !== '' && unresl !== ''){$('#modal-using-id .code-output-show').show();}
+					if (paramField !== '' && unresl !== '') {
+						$('#modal-using-id .code-output-show').show();
+					}
 				});
 
 				// handler: using labels
@@ -410,12 +425,15 @@ settings_errors();
 				}
 
 			});
+
 			function copy_to_clipboard(id) {
 				var copyText = document.getElementById(id);
 				copyText.select();
 				copyText.setSelectionRange(0, 99999);
 				document.execCommand("copy");
-				M.toast({html: 'Code copied to clipboard!'})
+				M.toast({
+					html: 'Code copied to clipboard!'
+				})
 			}
 		</script>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
