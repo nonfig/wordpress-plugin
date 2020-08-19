@@ -35,7 +35,7 @@ class Nonfig_Wp_Api_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'nonfig-wp-api',
+			'nonfig',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

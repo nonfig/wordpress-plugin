@@ -17,17 +17,17 @@ if (
 settings_errors();
 ?>
 <div class="wrap">
-	<h2><?php esc_html_e( 'Nonfig API Options', 'nonfig_wp_api' ); ?></h2>
+	<h2><?php esc_html_e( 'Nonfig API Options', 'nonfig' ); ?></h2>
 	<h2 class="nav-tab-wrapper">
 		<a href="?page=nonfig_wp_api_options&tab=api_key_option" class="nav-tab <?php echo 'api_key_option' === $active_tab ? 'nav-tab-active' : ''; ?>">
-			<?php esc_html_e( 'Settings', 'nonfig_wp_api' ); ?>
+			<?php esc_html_e( 'Settings', 'nonfig' ); ?>
 		</a>
 		<?php if ( $keys_present ) { ?>
 			<a
 				href="?page=nonfig_wp_api_options&tab=content_options"
 				class="nav-tab <?php echo 'content_options' === $active_tab ? 'nav-tab-active' : ''; ?>"
 			>
-				<?php esc_html_e( 'Shortcode Generator', 'nonfig_wp_api' ); ?></a>
+				<?php esc_html_e( 'Shortcode Generator', 'nonfig' ); ?></a>
 		<?php } ?>
 	</h2>
 	<form method="post" action="options.php">
