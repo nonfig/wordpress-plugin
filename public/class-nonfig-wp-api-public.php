@@ -254,9 +254,11 @@ class Nonfig_Wp_Api_Public {
 		if ( ! empty( $atts['full-name'] ) ) {
 			$table_data_label = 'full-name:' . $atts['full-name'];
 		}
+
 		if ( $atts['param-type'] == 'query' && ! empty( $atts['field'] ) ) {
-			$table_data_label = 'query:' . $_GET[ $atts['field'] ];
+			$table_data_label = 'query:' . sanitize_text_field( $_GET[ $atts['field'] ] );
 		}
+
 		if ( ! empty( $atts['keypath'] ) ) {
 			$table_data_label = $table_data_label . ',keypath:' . $atts['keypath'];
 		}
