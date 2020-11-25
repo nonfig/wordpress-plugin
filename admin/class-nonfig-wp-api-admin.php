@@ -77,7 +77,7 @@ class Nonfig_Wp_Api_Admin {
 			'https://fonts.googleapis.com/icon?family=Material+Icons',
 			array()
 		);
-		wp_enqueue_style( 'materialize', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
+		// wp_enqueue_style( 'materialize', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/nonfig-wp-api-admin.css', array(), $this->version, 'all' );
 	}
 
@@ -88,7 +88,7 @@ class Nonfig_Wp_Api_Admin {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'lodash', plugin_dir_url( __FILE__ ) . 'js/lodash.min.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( 'materialize', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, false );
+		// wp_enqueue_script( 'materialize', plugin_dir_url( __FILE__ ) . 'js/materialize.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/nonfig-wp-api-admin.js', array( 'jquery' ), $this->version, false );
 	}
 
