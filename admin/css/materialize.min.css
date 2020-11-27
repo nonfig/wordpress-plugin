@@ -10705,4 +10705,37 @@ body.settings_page_nonfig_wp_api_options #wpbody-content .timepicker-close {
     text-align: center;
     margin-top: 1.2rem;
   }
+  body.settings_page_nonfig_wp_api_options
+    #wpbody-content
+    .nonfig-modal
+    .input-field
+    .prefix {
+    width: 1.5rem;
+    font-size: 1.5rem;
+    top: 1rem;
+  }
+
+  body.settings_page_nonfig_wp_api_options
+    #wpbody-content
+    .nonfig-modal
+    .input-field
+    .prefix
+    ~ input,
+  body.settings_page_nonfig_wp_api_options
+    #wpbody-content
+    .nonfig-modal
+    .input-field
+    .prefix
+    ~ textarea {
+    margin-left: 2rem;
+    width: calc(100% - 1rem);
+  }
+  body.settings_page_nonfig_wp_api_options
+    #wpbody-content
+    .nonfig-modal
+    .input-field
+    .prefix
+    ~ label {
+    margin-left: 2rem;
+  }
 }

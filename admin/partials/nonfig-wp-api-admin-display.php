@@ -131,7 +131,7 @@ settings_errors();
 			</div>
 		</div>
 
-		<div id="modal-using-labels" class="modal">
+		<div id="modal-using-labels" class="nonfig-modal modal">
 			<div class="modal-content">
 				<h4>Generate for Segmented Labels </h4>
 				<div>
@@ -210,7 +210,7 @@ settings_errors();
 				<a href="#!" class="modal-close waves-effect waves-green btn-flat">Copy Code</a>
 			</div>
 		</div>
-		<div id="modal-using-query" class="modal">
+		<div id="modal-using-query" class="nonfig-modal modal">
 			<div class="modal-content">
 				<h4>Generate for Query Parmeters</h4>
 				<div class="row">
@@ -248,7 +248,7 @@ settings_errors();
 				<a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
 			</div>
 		</div>
-		<div id="modal-using-full-name" class="modal">
+		<div id="modal-using-full-name" class="nonfig-modal modal">
 			<div class="modal-content">
 				<h4>Generate for Query Parmeters</h4>
 				<div class="row">
@@ -279,7 +279,7 @@ settings_errors();
 				<a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
 			</div>
 		</div>
-		<div id="modal-using-id" class="modal">
+		<div id="modal-using-id" class="nonfig-modal modal">
 			<div class="modal-content">
 				<h4>Generate for Query Parmeters</h4>
 				<div class="row">
